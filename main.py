@@ -4,17 +4,12 @@ from imutils import contours
 import argparse
 import numpy as np
 import imutils
-import cv2
+import cv2 as cv
 
+import src.mafunction as f
 
 def midpoint(ptA, ptB):
     return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
-
-def show_image(title, image, destroy_all=True):
-    cv2.imshow(title, image)
-    cv2.waitKey(0)
-    if destroy_all:
-        cv2.destroyAllWindows()
 
 
 
@@ -23,28 +18,52 @@ ap.add_argument("-i", "--image", required=True, help="path to the input image")
 ap.add_argument("-w", "--width", type=float, required=True, help="width of the left-most object in the image (in inches)")
 args = vars(ap.parse_args())
 
-image = cv2.imread(args["image"])
-hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+image = cv.imread(args["image"])
+cvt = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
 
+f.show_image("ORI", image, False)
+f.show_image("HSV", cvt, False)
+
+imgaus = cv.GaussianBlur(cvt, (51, 51), 0)
+f.show_image("gaus", imgaus, False)
+
+ret, thresh = cv.threshold(imgaus,0,255,cv.THRESH_BINARY_INV + cv.THRESH_OTSU)
+f.show_image("thrs", thresh, False)
+
+erodila = cv.erode(thresh, None, iterations=3)
+erodila = cv.dilate(erodila, None, iterations=1)
+f.show_image("erodila", erodila, False)
+
+res = cv.bitwise_and(image,image, mask=erodila)
+f.show_image("res", res, False)
+
+edged = cv.Canny(erodila, None, None)
+f.show_image("Edged", edged, False)
+
+# Find many object there
+cnts = cv.findContours(edged, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+cnts = imutils.grab_contours(cnts)
+print("Total number of contours are: ", len(cnts))
+
+'''
 # define range of blue color in HSV
-sensitivity = 20
+sensitivity = 5
 lower_blue = np.array([60 - sensitivity, 50, 50])
 upper_blue = np.array([60 + sensitivity, 255, 255])
 # Threshold the HSV image to get only blue colors
-mask = cv2.inRange(hsv, lower_blue, upper_blue)
+mask = cv.inRange(image, lower_blue, upper_blue)
 # Bitwise-AND mask and original image
-res = cv2.bitwise_and(image,image, mask= mask)
+res = cv.bitwise_and(image,image, mask= mask)
 
-#gray = cv2.GaussianBlur(gray, (7, 7), 0)
-#gray = cv2.GaussianBlur(gray, (1, 1), 0)
+f.show_image("MASK", mask, False)
+f.show_image("RES", res, False)
+'''
 
-#edged = cv2.Canny(gray, 50, 100)
-#show_image("Edged", edged, False)
-#edged = cv2.dilate(edged, None, iterations=1)
-#edged = cv2.erode(edged, None, iterations=1)
-#show_image("erode and dilate", edged, True)
 
-show_image("ORI", image, False)
-show_image("GRAY", hsv, False)
-show_image("MASK", mask, False)
-show_image("RES", res, False)
+'''
+edged = cv.Canny(imgaus, 50, 100)
+f.show_image("Edged", edged, False)
+edged = cv.dilate(edged, None, iterations=1)
+#edged = cv.erode(edged, None, iterations=1)
+f.show_image("erode and dilate", edged, True)
+'''
