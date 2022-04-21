@@ -1,3 +1,5 @@
+from cv2 import ellipse
+from matplotlib import markers
 from scipy.spatial import distance as dist
 from imutils import perspective
 from imutils import contours
@@ -30,21 +32,28 @@ f.show_image("gaus", imgaus, False)
 ret, thresh = cv.threshold(imgaus,0,255,cv.THRESH_BINARY_INV + cv.THRESH_OTSU)
 f.show_image("thrs", thresh, False)
 
-erodila = cv.erode(thresh, None, iterations=3)
-erodila = cv.dilate(erodila, None, iterations=1)
+kernel = np.ones( (3,3), np.uint8 )
+erodila = cv.erode(thresh, kernel, iterations=3)
+erodila = cv.dilate(erodila, kernel, iterations=1)
 f.show_image("erodila", erodila, False)
 
 res = cv.bitwise_and(image,image, mask=erodila)
 f.show_image("res", res, False)
 
-edged = cv.Canny(erodila, None, None)
+edged = cv.Canny(erodila, 200, 255)
 f.show_image("Edged", edged, False)
 
 # Find many object there
-cnts = cv.findContours(edged, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+cnts = cv.findContours(erodila, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 cnts = imutils.grab_contours(cnts)
-print("Total number of contours are: ", len(cnts))
+print("Total number of contours: ", len(cnts))
 
+f.num_object(cnts)
+f.calc_perimeter(cnts)
+
+#cnt = cnts[0]
+#eclipse = cv.fitEllipse(cnt)
+#cv.ellipse(erodila, ellipse, (0,255,0), 2)
 '''
 # define range of blue color in HSV
 sensitivity = 5

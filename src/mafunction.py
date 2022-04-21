@@ -20,3 +20,22 @@ def process_color(image):
     
     # Bitwise-AND mask and original image
     res = cv.bitwise_and(image,image, mask= mask)
+
+perimeter = []
+def calc_perimeter(cnts):
+    for i in cnts:
+        arc_length = cv.arcLength(i, True)
+        perimeter.append(arc_length)
+    print("perimeter:", perimeter)
+
+area = []
+def num_object(cnts):
+    for i in cnts:
+        area.append( cv.contourArea(i) )
+    print("area:", area)
+
+moments = []
+def num_moments(cnts):
+    for i in cnts:
+        moments.append( cv.moments(i) )
+    print("moment:", moments)
