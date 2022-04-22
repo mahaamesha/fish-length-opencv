@@ -5,7 +5,7 @@ from matplotlib import contour
 import numpy as np
 import matplotlib.pyplot as plt
 
-def show_image(title, image, destroy_all=True):
+def show_image(title, image, destroy_all=False):
     cv.imshow(title, image)
     cv.waitKey(0)
     if destroy_all:
