@@ -1,0 +1,39 @@
+{
+    "list_image": [
+        {
+            "_title"    : "ORIGINAL",
+            "_variable" : "image",
+            "_flag"     : 1
+        },
+        {
+            "_title"    : "GRAY",
+            "_variable" : "cvt",
+            "_flag"     : 1
+        },
+        {
+            "_title"    : "GAUSSIAN",
+            "_variable" : "imgaus",
+            "_flag"     : 1
+        },
+        {
+            "_title"    : "THRESHOLD",
+            "_variable" : "thresh",
+            "_flag"     : 1
+        },
+        {
+            "_title"    : "EROSION DILATION",
+            "_variable" : "erodila",
+            "_flag"     : 1
+        },
+        {
+            "_title"    : "EDGE",
+            "_variable" : "edged",
+            "_flag"     : 1
+        },
+        {
+            "_title"    : "RESULT",
+            "_variable" : "res",
+            "_flag"     : 1
+        }
+    ]
+}
