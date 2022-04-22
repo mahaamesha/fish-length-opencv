@@ -1,4 +1,4 @@
-from cv2 import ellipse
+from cv2 import FILLED, LINE_AA, ellipse
 from matplotlib import markers
 from scipy.spatial import distance as dist
 from imutils import perspective
@@ -24,7 +24,7 @@ image = cv.imread(args["image"])
 cvt = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
 
 f.show_image("ORI", image, False)
-f.show_image("HSV", cvt, False)
+f.show_image("CVT", cvt, False)
 
 imgaus = cv.GaussianBlur(cvt, (51, 51), 0)
 f.show_image("gaus", imgaus, False)
@@ -44,35 +44,20 @@ edged = cv.Canny(erodila, 200, 255)
 f.show_image("Edged", edged, False)
 
 # Find many object there
-cnts = cv.findContours(erodila, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+cnts = cv.findContours(erodila, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 cnts = imutils.grab_contours(cnts)
 print("Total number of contours: ", len(cnts))
 
+# draw all contours in an image
+cv.drawContours(image, cnts, -1, (0,255,0), 2, LINE_AA)
+f.show_image("image_copy", image, False)
+
+f.edge_points(cnts, image)
+f.show_image("image_copy", image, False)
+
+#f.get_skeleton(thresh)
+f.fit_line(cnts, image)
+f.fit_poly(cnts)
+
 f.num_object(cnts)
 f.calc_perimeter(cnts)
-
-#cnt = cnts[0]
-#eclipse = cv.fitEllipse(cnt)
-#cv.ellipse(erodila, ellipse, (0,255,0), 2)
-'''
-# define range of blue color in HSV
-sensitivity = 5
-lower_blue = np.array([60 - sensitivity, 50, 50])
-upper_blue = np.array([60 + sensitivity, 255, 255])
-# Threshold the HSV image to get only blue colors
-mask = cv.inRange(image, lower_blue, upper_blue)
-# Bitwise-AND mask and original image
-res = cv.bitwise_and(image,image, mask= mask)
-
-f.show_image("MASK", mask, False)
-f.show_image("RES", res, False)
-'''
-
-
-'''
-edged = cv.Canny(imgaus, 50, 100)
-f.show_image("Edged", edged, False)
-edged = cv.dilate(edged, None, iterations=1)
-#edged = cv.erode(edged, None, iterations=1)
-f.show_image("erode and dilate", edged, True)
-'''
