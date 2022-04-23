@@ -1,7 +1,5 @@
-from ast import arguments
-from tkinter import Y
 import cv2 as cv
-from matplotlib import contour
+from matplotlib.font_manager import json_dump
 import numpy as np
 import matplotlib.pyplot as plt
 import math
@@ -19,8 +17,8 @@ def is_file_empty(file_path):
 def clear_json_file(title):
     filename = title + '.json'
     path = 'tmp/' + filename
-    with open(path,'w') as f:
-        f.close()
+    with open(path,'w'):
+        pass
 
 def write_json(title, dict):
     filename = title + '.json'
@@ -125,10 +123,11 @@ def encode_img(title='final'):
         file.write(converted_string)
     
     print('\tEncode', str(title+'.jpg.... Done'))
-
+    return str(converted_string)
+    
 
 # string to img
-def decode_img(title='final'):
+def decode_img(title='final'):  # check filename in folder imgcv
     path_imgcv = 'imgcv/' + title + '.jpeg'
     path_bin = 'bin/' + title + '.bin'
 
@@ -145,14 +144,16 @@ def decode_img(title='final'):
 
 # save img string to json
 # create new value "_encode"
-def imgstr2json(jsonfile='images.json'):
-    path = 'tmp/' + jsonfile
-    f = open(path)
-    data = json.load(f)
-    # see the structure in file: is_show_image.json
-    for key in data.keys():
-        print(data[key]['_var'])
-    print('Save Encoded img to images.json.... Done')
+def encode_imgjson():
+    with open('tmp/images.json', 'r') as fp:
+        tmp_img = json.load(fp)
+        for key in tmp_img.keys():
+            filename = tmp_img[key]["_var"]
+            tmp_img[key]["_encod"] = str( encode_img(filename) )
+            #print(tmp_img[key])
+    with open('tmp/images.json', 'w') as fp:
+        json.dump(tmp_img, fp, indent=4)   # write images.json
+    print('Encode all *jpg to bin folder... SUCCESS')
 
 
 
@@ -279,7 +280,7 @@ def get_fish_length():
     with open('tmp/points.json', 'r') as fp:
         data = json.load(fp)
         for key in data.keys(): # key are "curve_0", "curve_1", ...
-            A = fish_length[str('fish_'+ key[8:])] = {}
+            A = fish_length[str('fish_'+ key[5:])] = {}
             A.update( {'length': curve_length(data[key])} )
     
     # Write it to fish_length.json

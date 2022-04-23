@@ -1,0 +1,65 @@
+{
+    "ORIGINAL": {
+        "_id"   : 0,
+        "_title": "original",
+        "_var"  : "image",
+        "_flag" : 0,
+        "_encod": ""
+    },
+    "GRAY COLOR": {
+        "_id"   : 1,
+        "_title": "gray",
+        "_var"  : "cvt",
+        "_flag" : 0,
+        "_encod": ""
+    },
+    "GAUSSIAN": {
+        "_id"   : 2,
+        "_title": "gaussian",
+        "_var"  : "imgaus",
+        "_flag" : 0,
+        "_encod": ""
+    },
+    "THRESHOLD": {
+        "_id"   : 3,
+        "_title": "threshold",
+        "_var"  : "thresh",
+        "_flag" : 0,
+        "_encod": ""
+    },
+    "EROSION DILATION": {
+        "_id"   : 4,
+        "_title": "erodila",
+        "_var"  : "erodila",
+        "_flag" : 1,
+        "_encod": ""
+    },
+    "EDGE": {
+        "_id"   : 5,
+        "_title": "edge",
+        "_var"  : "edged",
+        "_flag" : 0,
+        "_encod": ""
+    },
+    "RES": {
+        "_id"   : 6,
+        "_title": "res",
+        "_var"  : "res",
+        "_flag" : 1,
+        "_encod": ""
+    },
+    "CONTOURED": {
+        "_id"   : 7,
+        "_title": "contoured",
+        "_var"  : "contoured",
+        "_flag" : 1,
+        "_encod": ""
+    },
+    "FINAL":{
+        "_id"   : 8,
+        "_title": "final",
+        "_var"  : "final",
+        "_flag" : 1,
+        "_encod": ""
+    }
+}
