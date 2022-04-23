@@ -111,6 +111,7 @@ def save_imgjson():
         for val in data.values():
             save_img(val['_var'], s.list_img[ val['_id'] ])
 
+
 # img to string
 def encode_img(title='final'):
     path_imgcv = 'imgcv/' + title + '.jpg'
@@ -355,4 +356,6 @@ def plot_curve2img(title='final.jpg', showPlot=False):
     
     if showPlot: plt.show()
     plt.savefig('imgcv/final.jpg')
+    s.final = cv.imread('imgcv/final.jpg')
+    s.list_img[len(s.list_img)-1] = s.final
     print('Plot Curve to img.... Done')

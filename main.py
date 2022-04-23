@@ -16,7 +16,6 @@ import src.segmentation as s
 # Use command in terminal to use main.py
 
 # Segmentation process
-f.show_imgjson()
 f.save_imgjson()
 
 #f.edge_points()
@@ -41,3 +40,5 @@ f.plot_curve2img()
 #f.calc_perimeter(cnts)
 #f.save_img2json()
 #f.save_img('edged', edged)
+
+f.show_imgjson()

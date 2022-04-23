@@ -2,6 +2,7 @@ import cv2 as cv
 import imutils
 import numpy as np
 import src.command as cmd
+from os.path import exists as file_exists
 
 # IMAGE SEGMENTATION PROCESS
 image_path = cmd.args["image"]
