@@ -35,13 +35,13 @@ def write_json(title, dict):
 
 def points2json(title, dict):
     # dict = {
-    #   'x_curve': [...], 
-    #   'y_curve': [...]
+    #   'x': [...], 
+    #   'y': [...]
     # }
     # final = {
-    #   'contour_0':{
-    #       'x_curve': [...],
-    #       'y_curve': [...]
+    #   'curve_0':{
+    #       'x': [...],
+    #       'y': [...]
     #   }, ...
     filename = title + '.json'
     path = 'tmp/' + filename
@@ -54,8 +54,8 @@ def points2json(title, dict):
         # if more than num_of_contours, delete old data
         if (len(final_dict) > len(s.cnts)):
             for i in range(len(final_dict)-1):
-                del final_dict[str('contour_'+str(i))]
-    final_dict[str('contour_'+str(len(final_dict)))] = dict
+                del final_dict[str('curve_'+str(i))]
+    final_dict[str('curve_'+str(len(final_dict)))] = dict
 
     
     with open(path, 'w') as fp:
@@ -206,10 +206,10 @@ def edge_points(cnts=s.cnts, image=s.image):
 # Length of fitting curve result
 def curve_length(dict_points):  # distance of 2 points: A and B
     sum = 0
-    length = len( dict_points['x_curve'] )
+    length = len( dict_points['x'] )
     for i in range(length-1):
-        A = ( dict_points['x_curve'][i], dict_points['y_curve'][i] )
-        B = ( dict_points['x_curve'][i+1], dict_points['y_curve'][i+1] )
+        A = ( dict_points['x'][i], dict_points['y'][i] )
+        B = ( dict_points['x'][i+1], dict_points['y'][i+1] )
         dx = abs(B[0] - A[0])   # |x2-x1|
         dy = abs(B[1] - A[1])   # |y2-y1|
 
@@ -229,7 +229,7 @@ def get_fish_length():
     fish_length = {}
     with open('tmp/points.json', 'r') as fp:
         data = json.load(fp)
-        for key in data.keys(): # key are "contour_0", "contour_1", ...
+        for key in data.keys(): # key are "curve_0", "curve_1", ...
             A = fish_length[str('fish_'+ key[8:])] = {}
             A.update( {'length': curve_length(data[key])} )
     
@@ -267,12 +267,12 @@ def fit_poly(cnts=s.cnts, showPlot=False):
         myline = np.linspace(min(x), max(x), 20)    # step 20 default
 
         # get all curve fitting coordinate
-        list_x_curve = myline.tolist()
-        list_y_curve = []
-        for i in list_x_curve:
-            list_y_curve.append( mymodel(i) )
-        points["x_curve"] = list_x_curve
-        points["y_curve"] = list_y_curve
+        list_x = myline.tolist()
+        list_y = []
+        for i in list_x:
+            list_y.append( mymodel(i) )
+        points["x"] = list_x
+        points["y"] = list_y
 
         # Export points to json
         points2json('points', points)
@@ -282,7 +282,7 @@ def fit_poly(cnts=s.cnts, showPlot=False):
 
         if showPlot:
             plt.scatter(x, y)
-            plt.plot(myline, mymodel(list_x_curve))
+            plt.plot(myline, mymodel(list_x))
             plt.show()
     print('Curve fitting for every contour... Done')
 
@@ -301,15 +301,14 @@ def plot_curve2img(title='lele'):
     with open('tmp/points.json', 'r') as fp:
         data = json.load(fp)
         
-        for key in data.keys():     # key: contour_0, contour_1, ...
-            # data['x_curve] have been sorted automaticaly
-            x = data[key]['x_curve']
-            y = data[key]['y_curve']
+        for key in data.keys():     # key: curve_0, curve_1, ...
+            # data['x] have been sorted automaticaly
+            x = data[key]['x']
+            y = data[key]['y']
             
             ax.plot(x, y, ls='dotted', linewidth=2, color='red')
         print()
     
-    plt.title('Plot Curve to Image')
     plt.savefig('imgcv/final.jpg')
     plt.show()
     print('Plot Curve to img.... Done')

@@ -18,12 +18,12 @@ from src.segmentation import *
 
 f.edge_points()
 #f.show_image("image_copy", image, False)
+#f.json_show_image()
 
 #f.get_skeleton(thresh)
 #f.fit_line()
 f.fit_poly()
 f.get_fish_length()
-#f.draw_curve2img()
 f.plot_curve2img()
 
 #f.calc_area(cnts)
