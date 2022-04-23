@@ -286,13 +286,30 @@ def fit_poly(cnts=s.cnts, showPlot=False):
             plt.show()
     print('Curve fitting for every contour... Done')
 
-# Access points.json and plot a line for every points
-def draw_fit_poly(image=s.image):
-    fjs = open('tmp/points.json', 'r')
-    data = json.load(fjs)
+
+
+def plot_curve2img(title='lele'):
+    filename = title + '.jpg'
+    path = 'img/' + filename
+
+    plt.rcParams["figure.autolayout"] = True
+
+    im = plt.imread(path)
+    fig, ax = plt.subplots()
+    im = ax.imshow(im)
+
+    with open('tmp/points.json', 'r') as fp:
+        data = json.load(fp)
+        
+        for key in data.keys():     # key: contour_0, contour_1, ...
+            # data['x_curve] have been sorted automaticaly
+            x = data[key]['x_curve']
+            y = data[key]['y_curve']
+            
+            ax.plot(x, y, ls='dotted', linewidth=2, color='red')
+        print()
     
-    for key in data.keys():
-        print(key)
-    print()
-    
-    fjs.close()
+    plt.title('Plot Curve to Image')
+    plt.savefig('imgcv/final.jpg')
+    plt.show()
+    print('Plot Curve to img.... Done')
