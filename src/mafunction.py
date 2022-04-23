@@ -83,18 +83,17 @@ def show_img(title, img, destroy_all=False):
         cv.destroyAllWindows()
 
 
-def json_show_image(jsonfile='images.json'):
-    path = 'tmp/' + jsonfile
-    f = open(path)
-    data = json.load(f)
-    # see the structure in file: is_show_image.json
-    for val in data.values():
-        for i in range(len(val)):
-            #print('>>>', val[i]['_title'])
-            if (val[i]['_flag'] == 1):
-                print('tes')
-                #show_image(title=val[i]['_title'], image=val[i]['_variable'])
-    f.close
+# to not show, set the '_flag' to 0 in images.json
+def show_imgjson():
+    with open('tmp/images.json', 'r') as fp:
+        data = json.load(fp)
+
+        for val in data.values():
+            if val['_flag']:
+                show_img(val['_var'], s.list_img[ val['_id'] ])
+
+    print('Save all image to imgcv.... Done')
+
 
 
 def save_img(title, img):
@@ -111,20 +110,6 @@ def save_imgjson():
         data = json.load(fp)
         for val in data.values():
             save_img(val['_var'], s.list_img[ val['_id'] ])
-
-    print('Save all image to imgcv.... Done')
-
-'''
-def bulk_showORsave_img(func=save_img()):
-    func("ORIGINAL", s.image) # original
-    func("GRAY COLOR", s.cvt) # gray object
-    func("GAUSSIAN", s.imgaus)    # blur img
-    func("THRESHOLD", s.thresh)   # set black & white
-    func("EROSION & DILATION", s.erodila) # precise boundary from black & white img
-    func("EDGE", s.edged) # edge only from erodila
-    func("RESULT", s.res) # extract result: catfish only in black background
-    func("CONTOURED", s.contoured) # final
-'''
 
 # img to string
 def encode_img(title='final'):

@@ -16,11 +16,7 @@ import src.segmentation as s
 # Use command in terminal to use main.py
 
 # Segmentation process
-idd = f.get_id_imgjson('image')
-tit = 'image'
-im = s.list_img[idd]
-f.show_img(tit, im)
-
+f.show_imgjson()
 f.save_imgjson()
 
 #f.edge_points()

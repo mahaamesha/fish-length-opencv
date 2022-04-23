@@ -37,6 +37,8 @@ contoured = image.copy()
 cv.drawContours(contoured, cnts, -1, (0,255,0), 2)
 #f.show_image("image_copy", image, False)
 
+# for ploting curve
+final = contoured.copy()
 
 # Check the '_id' in images.json to call it
 list_img = [
@@ -47,7 +49,8 @@ list_img = [
     erodila,
     edged,
     res,
-    contoured
+    contoured,
+    final
 ]
 
 

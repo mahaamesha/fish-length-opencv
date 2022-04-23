@@ -3,25 +3,25 @@
         "_id"   : 0,
         "_title": "original",
         "_var"  : "image",
-        "_flag" : 1
+        "_flag" : 0
     },
     "GRAY COLOR": {
         "_id"   : 1,
         "_title": "gray",
         "_var"  : "cvt",
-        "_flag" : 1
+        "_flag" : 0
     },
     "GAUSSIAN": {
         "_id"   : 2,
         "_title": "gaussian",
         "_var"  : "imgaus",
-        "_flag" : 1
+        "_flag" : 0
     },
     "THRESHOLD": {
         "_id"   : 3,
         "_title": "threshold",
         "_var"  : "thresh",
-        "_flag" : 1
+        "_flag" : 0
     },
     "EROSION DILATION": {
         "_id"   : 4,
@@ -33,7 +33,7 @@
         "_id"   : 5,
         "_title": "edge",
         "_var"  : "edged",
-        "_flag" : 1
+        "_flag" : 0
     },
     "RES": {
         "_id"   : 6,
@@ -46,5 +46,11 @@
         "_title": "contoured",
         "_var"  : "contoured",
         "_flag" : 1
+    },
+    "FINAL":{
+        "_id"   : 8,
+        "_title": "final",
+        "_var"  : "final",
+        "_flag" : 0
     }
 }
