@@ -13,7 +13,6 @@ import src.segmentation as s
 
 def is_file_empty(file_path):
     """ Check if file is empty by confirming if its size is 0 bytes"""
-    # Check if file exist and it is empty
     return os.path.exists(file_path) and os.stat(file_path).st_size == 0
 
 def clear_json_file(title):
@@ -22,7 +21,7 @@ def clear_json_file(title):
     with open(path,'w') as f:
         f.close()
 
-def write_json(dict, title):
+def write_json(title, dict):
     filename = title + '.json'
     path = 'tmp/' + filename
 
@@ -56,13 +55,12 @@ def points2json(title, dict):
         if (len(final_dict) > len(s.cnts)):
             for i in range(len(final_dict)-1):
                 del final_dict[str('contour_'+str(i))]
-                print('============== >>>', int(i))
     final_dict[str('contour_'+str(len(final_dict)))] = dict
 
     
     with open(path, 'w') as fp:
         json.dump(final_dict, fp, indent=4)
-    print('Export', filename, '... Done')
+    #print('Export', filename, '... Done')
 
 
 
@@ -104,6 +102,7 @@ def save_img2json(jsonfile='images.json'):
         for i in range(len(val)):
             print('>>>', val[i]['_variable'])
             #save_img(val[i]['_variable'])
+    print('Saving *.jpg to imgcv... Done')
 
 
 def calc_perimeter(cnts=s.cnts):
@@ -218,12 +217,32 @@ def curve_length(dict_points):  # distance of 2 points: A and B
 
         sum += dl
     
-    print('Fish Length:', "{:.2f}".format(sum))
+    #print('Fish Length:', "{:.2f}".format(sum))
     return sum
+
+    # Get curve length for every contour, then add to dictionary
+    #fish_length[str(len(fish_length))] = curve_length(points)
+
+
+# measure fish length with data from points.json
+def get_fish_length():
+    fish_length = {}
+    with open('tmp/points.json', 'r') as fp:
+        data = json.load(fp)
+        for key in data.keys(): # key are "contour_0", "contour_1", ...
+            A = fish_length[str('fish_'+ key[8:])] = {}
+            A.update( {'length': curve_length(data[key])} )
+    
+    # Write it to fish_length.json
+    with open('tmp/fish_length.json', 'w') as fp:
+        json.dump(fish_length, fp, indent=4)
+
+    print('Measure fish length... Done')
+
+
 
 
 points = {}
-fish_length = {}
 def fit_poly(cnts=s.cnts, showPlot=False):
     # Get all approx points in a contour
     # approx_factor defined in 'edge_points()'
@@ -245,7 +264,7 @@ def fit_poly(cnts=s.cnts, showPlot=False):
                 y.append(n[i])
         
         mymodel = np.poly1d(np.polyfit(x, y, 3))    # 3th degree polynomial
-        myline = np.linspace(min(x), max(x), 20)
+        myline = np.linspace(min(x), max(x), 20)    # step 20 default
 
         # get all curve fitting coordinate
         list_x_curve = myline.tolist()
@@ -257,11 +276,6 @@ def fit_poly(cnts=s.cnts, showPlot=False):
 
         # Export points to json
         points2json('points', points)
-        
-
-        # Get curve length for every contour, then add to dictionary
-        fish_length[str(len(fish_length))] = curve_length(points)
-        
 
         # Draw curve to image
         #for 
@@ -270,3 +284,15 @@ def fit_poly(cnts=s.cnts, showPlot=False):
             plt.scatter(x, y)
             plt.plot(myline, mymodel(list_x_curve))
             plt.show()
+    print('Curve fitting for every contour... Done')
+
+# Access points.json and plot a line for every points
+def draw_fit_poly(image=s.image):
+    fjs = open('tmp/points.json', 'r')
+    data = json.load(fjs)
+    
+    for key in data.keys():
+        print(key)
+    print()
+    
+    fjs.close()

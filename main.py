@@ -23,10 +23,11 @@ f.edge_points()
 #f.show_image("image_copy", image, False)
 
 #f.get_skeleton(thresh)
-f.fit_line()
+#f.fit_line()
 f.fit_poly()
+f.get_fish_length()
 
 #f.calc_area(cnts)
 #f.calc_perimeter(cnts)
-f.save_img2json()
+#f.save_img2json()
 #f.save_img('edged', edged)
