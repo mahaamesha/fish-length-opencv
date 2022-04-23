@@ -19,3 +19,4 @@ f.plot_curve2img()
 
 
 f.show_imgjson()
+f.decode_imgjson()

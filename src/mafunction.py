@@ -127,8 +127,8 @@ def encode_img(title='final'):
     
 
 # string to img
-def decode_img(title='final'):  # check filename in folder imgcv
-    path_imgcv = 'imgcv/' + title + '.jpeg'
+def decode_img(title='final', format='.jpg'):  # check filename in folder imgcv
+    path_imgcv = 'imgcv/' + title + format
     path_bin = 'bin/' + title + '.bin'
 
     file = open(path_bin, 'rb')
@@ -139,7 +139,7 @@ def decode_img(title='final'):  # check filename in folder imgcv
     decodeit.write(base64.b64decode((byte)))
     decodeit.close()
     
-    print('\tDecode', str(title+'.jpg.... Done') )
+    print('\tDecode', str(title+'.bin.... Done') )
 
 
 # save img string to json
@@ -153,7 +153,15 @@ def encode_imgjson():
             #print(tmp_img[key])
     with open('tmp/images.json', 'w') as fp:
         json.dump(tmp_img, fp, indent=4)   # write images.json
-    print('Encode all *jpg to bin folder... SUCCESS')
+    print('Encode all *.jpg to bin folder... SUCCESS')
+
+
+def decode_imgjson():
+    with open('tmp/images.json', 'r') as fp:
+        tmp_img = json.load(fp)
+        for val in tmp_img.values():
+            decode_img( str(val['_var']))
+    print('Decode all *.bin to imgcv folder... SUCCESS')
 
 
 
