@@ -1,8 +1,7 @@
 import src.mafunction as f
-from src.segmentation import *
-import src.segmentation as s
 
 # Use command in terminal to use main.py
+#python main.py -i img/lele.jpg -w 1
 
 # Segmentation process
 f.save_imgjson()

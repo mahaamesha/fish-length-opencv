@@ -36,7 +36,6 @@ print("Total number of contours: ", len(cnts))
 contoured = image.copy()
 # Draw all contours in an img
 cv.drawContours(contoured, cnts, -1, (0,255,0), 2)
-#f.show_image("image_copy", image, False)
 
 # for ploting curve
 final = contoured.copy()
@@ -53,11 +52,3 @@ list_img = [
     contoured,
     final
 ]
-
-
-# Export to json file --> in main.py
-
-
-# Call this function in main.py
-#bulk_showORsave_img(func=show_img()))
-#bulk_showORsave_img(func=save_img()))

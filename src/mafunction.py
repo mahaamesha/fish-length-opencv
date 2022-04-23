@@ -1,5 +1,4 @@
 import cv2 as cv
-from matplotlib.font_manager import json_dump
 import numpy as np
 import matplotlib.pyplot as plt
 import math
@@ -263,7 +262,7 @@ def edge_points(cnts=s.cnts, image=s.image):
             i = i + 1
 
 
-# Length of fitting curve result
+# Length of fitting curve result. dict_points --> points in fit_poly()
 def curve_length(dict_points):  # distance of 2 points: A and B
     sum = 0
     length = len( dict_points['x'] )
@@ -288,7 +287,7 @@ def get_fish_length():
     with open('tmp/points.json', 'r') as fp:
         data = json.load(fp)
         for key in data.keys(): # key are "curve_0", "curve_1", ...
-            A = fish_length[str('fish_'+ key[5:])] = {}
+            A = fish_length[str('fish_'+ key[6:])] = {}
             A.update( {'length': curve_length(data[key])} )
     
     # Write it to fish_length.json
@@ -301,15 +300,19 @@ def get_fish_length():
 
 
 points = {}
-def fit_poly(cnts=s.cnts, showPlot=False):
+def fit_poly(cnts=s.cnts, showPlot=False, option=1):
+    # option to choose: 1 more points used | 0 fewer points used
     # Get all approx points in a contour
     # approx_factor defined in 'edge_points()'
     
     clear_json_file('points')
 
     for cnt in cnts :
-        approx = cv.approxPolyDP(cnt, approx_factor * cv.arcLength(cnt, True), True)   # 0.005 : more lower more points detected
-        n = approx.ravel()
+        # ravel() to flatten numpy array
+        if (option == 0):
+            approx = cv.approxPolyDP(cnt, approx_factor * cv.arcLength(cnt, True), True)   # 0.005 : more lower more points detected
+            n = approx.ravel()
+        else: n = cnt.ravel()
 
         # Extract x, y coordinate
         x = []
@@ -361,7 +364,7 @@ def plot_curve2img(title='final.jpg', showPlot=False):
             x = data[key]['x']
             y = data[key]['y']
             
-            ax.plot(x, y, ls='dotted', linewidth=3, color='red')
+            ax.plot(x, y, ls='dotted', linewidth=5, color='red')
     
     if showPlot: plt.show()
     plt.savefig('imgcv/final.jpg')
