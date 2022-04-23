@@ -1,4 +1,6 @@
 /testcode
 
+**/__pycache__/
+
 watershed.py
 watershed1.py
