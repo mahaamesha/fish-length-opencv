@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import math
 import json
 import os
+import base64
 
 import src.segmentation as s
 
@@ -63,9 +64,20 @@ def points2json(title, dict):
     #print('Export', filename, '... Done')
 
 
+# check images.json, return '_id'
+def get_id_imgjson(_var):    # input string, ex: 'images'
+    with open('tmp/images.json', 'r') as fp:
+        data = json.load(fp)
+        for key in data.keys():
+            var = data[key]['_var']
+            _id = data[key]['_id']
 
-def show_image(title, image, destroy_all=False):
-    cv.imshow(title, image)
+            if (var == _var): 
+                return int(_id)
+
+
+def show_img(title, img, destroy_all=False):
+    cv.imshow(title, img)
     cv.waitKey(0)
     if destroy_all:
         cv.destroyAllWindows()
@@ -93,16 +105,69 @@ def save_img(title, img):
     print('Image written to', path, '...', status)
 
 
-def save_img2json(jsonfile='images.json'):
+# save all to imgcv, source from images.json
+def save_imgjson():
+    with open('tmp/images.json', 'r') as fp:
+        data = json.load(fp)
+        for val in data.values():
+            save_img(val['_var'], s.list_img[ val['_id'] ])
+
+    print('Save all image to imgcv.... Done')
+
+'''
+def bulk_showORsave_img(func=save_img()):
+    func("ORIGINAL", s.image) # original
+    func("GRAY COLOR", s.cvt) # gray object
+    func("GAUSSIAN", s.imgaus)    # blur img
+    func("THRESHOLD", s.thresh)   # set black & white
+    func("EROSION & DILATION", s.erodila) # precise boundary from black & white img
+    func("EDGE", s.edged) # edge only from erodila
+    func("RESULT", s.res) # extract result: catfish only in black background
+    func("CONTOURED", s.contoured) # final
+'''
+
+# img to string
+def encode_img(title='final'):
+    path_imgcv = 'imgcv/' + title + '.jpg'
+    path_bin = 'bin/' + title + '.bin'
+
+    with open(path_imgcv, 'rb') as image2string:
+        converted_string = base64.b64encode(image2string.read())
+    #print(converted_string)
+    
+    with open(path_bin, 'wb') as file:
+        file.write(converted_string)
+    
+    print('\tEncode', str(title+'.jpg.... Done'))
+
+
+# string to img
+def decode_img(title='final'):
+    path_imgcv = 'imgcv/' + title + '.jpeg'
+    path_bin = 'bin/' + title + '.bin'
+
+    file = open(path_bin, 'rb')
+    byte = file.read()
+    file.close()
+    
+    decodeit = open(path_imgcv, 'wb')
+    decodeit.write(base64.b64decode((byte)))
+    decodeit.close()
+    
+    print('\tDecode', str(title+'.jpg.... Done') )
+
+
+# save img string to json
+# create new value "_encode"
+def imgstr2json(jsonfile='images.json'):
     path = 'tmp/' + jsonfile
     f = open(path)
     data = json.load(f)
     # see the structure in file: is_show_image.json
-    for val in data.values():
-        for i in range(len(val)):
-            print('>>>', val[i]['_variable'])
-            #save_img(val[i]['_variable'])
-    print('Saving *.jpg to imgcv... Done')
+    for key in data.keys():
+        print(data[key]['_var'])
+    print('Save Encoded img to images.json.... Done')
+
 
 
 def calc_perimeter(cnts=s.cnts):
@@ -156,7 +221,7 @@ def get_skeleton(img=s.erodila):
     #largest_skeleton_contour = max(skeleton_contours, key=cv.contourArea)
 
     cv.drawContours(img, skel, -1, (0, 0, 255), 2)
-    show_image("skeleton", skel, False)
+    show_img("skeleton", skel, False)
 
 
 def fit_line(cnts=s.cnts, image=s.image):
@@ -166,7 +231,7 @@ def fit_line(cnts=s.cnts, image=s.image):
         lefty = int((-x*vy/vx) + y)
         righty = int(((cols-x)*vy/vx)+y)
         cv.line(image, (cols-1,righty),(0,lefty),(0,255,0),2)
-    show_image("fit", image, False)
+    show_img("fit", image, False)
 
 
 # To draw coordinate for all edge points
@@ -220,8 +285,6 @@ def curve_length(dict_points):  # distance of 2 points: A and B
     #print('Fish Length:', "{:.2f}".format(sum))
     return sum
 
-    # Get curve length for every contour, then add to dictionary
-    #fish_length[str(len(fish_length))] = curve_length(points)
 
 
 # measure fish length with data from points.json
@@ -237,7 +300,7 @@ def get_fish_length():
     with open('tmp/fish_length.json', 'w') as fp:
         json.dump(fish_length, fp, indent=4)
 
-    print('Measure fish length... Done')
+    print('Measure fish length.... Done')
 
 
 
@@ -288,13 +351,10 @@ def fit_poly(cnts=s.cnts, showPlot=False):
 
 
 
-def plot_curve2img(title='lele'):
-    filename = title + '.jpg'
-    path = 'img/' + filename
-
+def plot_curve2img(title='final.jpg', showPlot=False):
     plt.rcParams["figure.autolayout"] = True
 
-    im = plt.imread(path)
+    im = plt.imread('imgcv/'+title)
     fig, ax = plt.subplots()
     im = ax.imshow(im)
 
@@ -306,9 +366,8 @@ def plot_curve2img(title='lele'):
             x = data[key]['x']
             y = data[key]['y']
             
-            ax.plot(x, y, ls='dotted', linewidth=2, color='red')
-        print()
+            ax.plot(x, y, ls='dotted', linewidth=3, color='red')
     
+    if showPlot: plt.show()
     plt.savefig('imgcv/final.jpg')
-    plt.show()
     print('Plot Curve to img.... Done')

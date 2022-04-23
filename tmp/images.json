@@ -1,39 +1,50 @@
 {
-    "list_image": [
-        {
-            "_title"    : "ORIGINAL",
-            "_variable" : "image",
-            "_flag"     : 1
-        },
-        {
-            "_title"    : "GRAY",
-            "_variable" : "cvt",
-            "_flag"     : 1
-        },
-        {
-            "_title"    : "GAUSSIAN",
-            "_variable" : "imgaus",
-            "_flag"     : 1
-        },
-        {
-            "_title"    : "THRESHOLD",
-            "_variable" : "thresh",
-            "_flag"     : 1
-        },
-        {
-            "_title"    : "EROSION DILATION",
-            "_variable" : "erodila",
-            "_flag"     : 1
-        },
-        {
-            "_title"    : "EDGE",
-            "_variable" : "edged",
-            "_flag"     : 1
-        },
-        {
-            "_title"    : "RESULT",
-            "_variable" : "res",
-            "_flag"     : 1
-        }
-    ]
+    "ORIGINAL": {
+        "_id"   : 0,
+        "_title": "original",
+        "_var"  : "image",
+        "_flag" : 1
+    },
+    "GRAY COLOR": {
+        "_id"   : 1,
+        "_title": "gray",
+        "_var"  : "cvt",
+        "_flag" : 1
+    },
+    "GAUSSIAN": {
+        "_id"   : 2,
+        "_title": "gaussian",
+        "_var"  : "imgaus",
+        "_flag" : 1
+    },
+    "THRESHOLD": {
+        "_id"   : 3,
+        "_title": "threshold",
+        "_var"  : "thresh",
+        "_flag" : 1
+    },
+    "EROSION DILATION": {
+        "_id"   : 4,
+        "_title": "erodila",
+        "_var"  : "erodila",
+        "_flag" : 1
+    },
+    "EDGE": {
+        "_id"   : 5,
+        "_title": "edge",
+        "_var"  : "edged",
+        "_flag" : 1
+    },
+    "RES": {
+        "_id"   : 6,
+        "_title": "res",
+        "_var"  : "res",
+        "_flag" : 1
+    },
+    "CONTOURED": {
+        "_id"   : 7,
+        "_title": "contoured",
+        "_var"  : "contoured",
+        "_flag" : 1
+    }
 }
