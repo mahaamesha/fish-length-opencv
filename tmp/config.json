@@ -1,0 +1,21 @@
+{
+    "config_0":{
+        "_id": 0,
+        "_blurSize": [51,51],
+        "_threshVal": [0,255],
+        "_kernelSize": [3,3],
+        "_erodilaIter": [3,1],
+        "_cannyThresh": [0,255],
+        "_usage": "Big sized and separated objects"
+    },
+
+    "config_1":{
+        "_id": 1,
+        "_blurSize": [51,51],
+        "_threshVal": [0,255],
+        "_kernelSize": [3,3],
+        "_erodilaIter": [3,1],
+        "_cannyThresh": [0,255],
+        "_usage": "Litle sized and separated objects"
+    }
+}
