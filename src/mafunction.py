@@ -13,13 +13,12 @@ def is_file_empty(file_path):
     """ Check if file is empty by confirming if its size is 0 bytes"""
     return os.path.exists(file_path) and os.stat(file_path).st_size == 0
 
+
 def clear_json_file(title):
     filename = title + '.json'
     path = 'tmp/' + filename
     with open(path,'w'):
         pass
-
-
 
 
 def write_json(title, dict):
@@ -58,7 +57,6 @@ def points2json(title, dict):
                 del final_dict[str('curve_'+str(i))]
     final_dict[str('curve_'+str(len(final_dict)))] = dict
 
-    
     with open(path, 'w') as fp:
         json.dump(final_dict, fp, indent=4)
     #print('Export', filename, '... Done')
@@ -95,9 +93,6 @@ def show_imgjson():
                 show_img(val['_var'], s.list_img[ val['_id'] ])
     print()
         
-
-
-
 
 def save_img(title, img):
     filename = title + '.jpg'
@@ -164,6 +159,7 @@ def encode_imgjson():
         json.dump(tmp_img, fp, indent=4)   # write images.json
     print()
 
+
 def decode_imgjson():
     print('Decode *.bin in /bin/:')
     with open('tmp/images.json', 'r') as fp:
@@ -171,7 +167,6 @@ def decode_imgjson():
         for val in tmp_img.values():
             decode_img( str(val['_var']))
     print()
-
 
 
 def calc_perimeter(cnts=s.cnts):
@@ -290,7 +285,6 @@ def curve_length(dict_points):  # distance of 2 points: A and B
     return sum
 
 
-
 # measure fish length with data from points.json
 def get_fish_length():
     fish_length = {}
@@ -326,9 +320,6 @@ def validate_fish_length():
     upper = np.quantile(dt, 1.00)
 
 
-
-
-
 points = {}
 def fit_poly(cnts=s.cnts, showPlot=False, option=1):
     # option to choose: 1 more points used | 0 fewer points used
@@ -336,7 +327,6 @@ def fit_poly(cnts=s.cnts, showPlot=False, option=1):
     # approx_factor defined in 'edge_points()'
     
     clear_json_file('points')
-
     for cnt in cnts :
         # ravel() to flatten numpy array
         if (option == 0):
@@ -368,15 +358,11 @@ def fit_poly(cnts=s.cnts, showPlot=False, option=1):
         # Export points to json
         points2json('points', points)
 
-        # Draw curve to image
-        #for 
-
         if showPlot:
             plt.scatter(x, y)
             plt.plot(myline, mymodel(list_x))
             plt.show()
     print( str('Curve fitting for every contour').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
-
 
 
 def plot_curve2img(title='final.jpg', showPlot=False):

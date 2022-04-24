@@ -26,7 +26,7 @@ def config_segmentation(param=param, configChoice=0):    # import tmp/config.jso
                 param.append( (val['_erodilaIter'][0], val['_erodilaIter'][1]) )
                 param.append( (val['_cannyThresh'][0], val['_cannyThresh'][1]) )
                 
-                print( str('Segmentation config_' + str(val['_id'])).ljust(37, '.') + str('Done').rjust(5,' ') )
+                print( str('Use segmentation config_' + str(val['_id'])).ljust(37, '.') + str('Done').rjust(5,' ') )
     #print(param)
     print()
     return param
