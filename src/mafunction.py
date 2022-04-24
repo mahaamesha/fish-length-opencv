@@ -19,6 +19,9 @@ def clear_json_file(title):
     with open(path,'w'):
         pass
 
+
+
+
 def write_json(title, dict):
     filename = title + '.json'
     path = 'tmp/' + filename
@@ -76,20 +79,23 @@ def get_id_imgjson(_var):    # input string, ex: 'images'
 def show_img(title, img, destroy_all=False):
     cv.imshow(title, img)
     cv.waitKey(0)
-    if destroy_all:
+    if destroy_all == True:
         cv.destroyAllWindows()
+    print( str('\tShow ' + title + '.jpg').ljust(30,'.') + str('Done').rjust(5,' ') )
 
 
 # to not show, set the '_flag' to 0 in images.json
 def show_imgjson():
+    print(str('Show selected img listed in images.json:'))
     with open('tmp/images.json', 'r') as fp:
         data = json.load(fp)
 
         for val in data.values():
             if val['_flag']:
                 show_img(val['_var'], s.list_img[ val['_id'] ])
+    print()
+        
 
-    print('Save all image to imgcv.... Done')
 
 
 
@@ -98,15 +104,18 @@ def save_img(title, img):
     path = 'imgcv/' + filename
     status = cv.imwrite(path, img)
     # folder should be initialized first
-    print('Image written to', path, '...', status)
+    
+    print( str('\t' + path).ljust(30,'.') + str(status).rjust(5,' ') )
 
 
 # save all to imgcv, source from images.json
 def save_imgjson():
+    print('Save all img listed in images.json:')
     with open('tmp/images.json', 'r') as fp:
         data = json.load(fp)
         for val in data.values():
             save_img(val['_var'], s.list_img[ val['_id'] ])
+    print()
 
 
 # img to string
@@ -121,7 +130,7 @@ def encode_img(title='final'):
     with open(path_bin, 'wb') as file:
         file.write(converted_string)
     
-    print('\tEncode', str(title+'.jpg.... Done'))
+    print(str('\t' + path_bin).ljust(30,'.') + str('Done').rjust(5,' '))
     return str(converted_string)
     
 
@@ -138,12 +147,13 @@ def decode_img(title='final', format='.jpg'):  # check filename in folder imgcv
     decodeit.write(base64.b64decode((byte)))
     decodeit.close()
     
-    print('\tDecode', str(title+'.bin.... Done') )
+    print( str('\t' + path_imgcv).ljust(30,'.') + str('Done').rjust(5,' ') )
 
 
 # save img string to json
 # create new value "_encode"
 def encode_imgjson():
+    print('Encode *.jpg in /imgcv/:')
     with open('tmp/images.json', 'r') as fp:
         tmp_img = json.load(fp)
         for key in tmp_img.keys():
@@ -152,15 +162,15 @@ def encode_imgjson():
             #print(tmp_img[key])
     with open('tmp/images.json', 'w') as fp:
         json.dump(tmp_img, fp, indent=4)   # write images.json
-    print('Encode all *.jpg to bin folder... SUCCESS')
-
+    print()
 
 def decode_imgjson():
+    print('Decode *.bin in /bin/:')
     with open('tmp/images.json', 'r') as fp:
         tmp_img = json.load(fp)
         for val in tmp_img.values():
             decode_img( str(val['_var']))
-    print('Decode all *.bin to imgcv folder... SUCCESS')
+    print()
 
 
 
@@ -294,7 +304,27 @@ def get_fish_length():
     with open('tmp/fish_length.json', 'w') as fp:
         json.dump(fish_length, fp, indent=4)
 
-    print('Measure fish length.... Done')
+    print( str('Measure fish length').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
+
+
+def validate_fish_length():
+    dt = []
+    with open('tmp/fish_length.json', 'r') as fp:
+        data = json.load(fp)
+        for val in data.values():
+            dt.append(val['length'])
+    
+    # Compare i with average
+    std = np.std(dt)
+    avr = np.average(dt)
+
+    print(avr)
+    print(std)
+    print(avr-std, avr+std)
+
+    lower = np.quantile(dt, 0.75)
+    upper = np.quantile(dt, 1.00)
+
 
 
 
@@ -345,7 +375,7 @@ def fit_poly(cnts=s.cnts, showPlot=False, option=1):
             plt.scatter(x, y)
             plt.plot(myline, mymodel(list_x))
             plt.show()
-    print('Curve fitting for every contour... Done')
+    print( str('Curve fitting for every contour').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
 
 
 
@@ -370,4 +400,4 @@ def plot_curve2img(title='final.jpg', showPlot=False):
     plt.savefig('imgcv/final.jpg')
     s.final = cv.imread('imgcv/final.jpg')
     s.list_img[len(s.list_img)-1] = s.final
-    print('Plot Curve to img.... Done')
+    print( str('Plot curve to original img').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')

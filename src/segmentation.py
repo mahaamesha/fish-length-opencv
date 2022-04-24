@@ -2,7 +2,14 @@ import cv2 as cv
 import imutils
 import numpy as np
 import src.command as cmd
-from os.path import exists as file_exists
+
+
+# SETUP PARAMETER
+param = []
+def set_setup():    # import 
+    return param
+# (END) SETUP PARAMETER
+
 
 # IMAGE SEGMENTATION PROCESS
 image_path = cmd.args["image"]

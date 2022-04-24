@@ -13,9 +13,10 @@ f.encode_imgjson()
 #f.fit_line()
 f.fit_poly()
 f.get_fish_length()
+f.validate_fish_length()
 
 f.plot_curve2img()
 
 
 f.show_imgjson()
-f.decode_imgjson()
+#f.decode_imgjson()
