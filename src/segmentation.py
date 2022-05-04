@@ -70,15 +70,16 @@ markers = markers + 1
 # Mark the region of unknown with 0
 markers[unknown == 255] = 0
 # Apply watershed
-immg = image.copy()
-markers = cv.watershed(immg, markers)
+watershed_result = image.copy()
+markers = cv.watershed(watershed_result, markers)
 # Mark boundary region with -1
-immg[markers == -1] = [0, 255, 0]
+watershed_result[markers == -1] = [0, 255, 0]
 
 
 
 # Detect the edge from BLACK WHITE img
-edged = cv.Canny(erodila, param[4][0], param[4][1])
+cv.Canny(sure_fg, param[4][0], param[4][1])
+edged = cv.dilate(sure_fg, kernel, iterations=11)
 
 # Extract object only with black background
 res = cv.bitwise_and(image,image, mask=erodila)
