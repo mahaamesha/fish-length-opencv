@@ -166,17 +166,20 @@ def decode_img(title='final', format='.jpg'):  # check filename in folder imgcv
 
 
 # save img string to json
-# create new value "_encode"
+# create new value "_encod"
 def encode_imgjson():
     print('Encode *.jpg in /imgcv/:')
     with open('tmp/images.json', 'r') as fp:
-        tmp_img = json.load(fp)
-        for key in tmp_img.keys():
-            filename = tmp_img[key]["_var"]
-            tmp_img[key]["_encod"] = str( encode_img(filename) )
-            #print(tmp_img[key])
+        data = json.load(fp)
+        for val in data.values():
+            if val["_encodeflag"] == 1:     # change _encodeflag in segmentation.py
+                filename = val["_var"]
+                #val["_encod"] = str( encode_img(filename) )   # to save encoded str to images.json
+                encode_img(filename)
+                val["_encod"] = str( 'bin/' + filename + '.bin' )    # to save path file.bin to images.json
+
     with open('tmp/images.json', 'w') as fp:
-        json.dump(tmp_img, fp, indent=4)   # write images.json
+        json.dump(data, fp, indent=4)   # write images.json
     print()
 
 
