@@ -97,9 +97,10 @@ contoured = cv.drawContours(contoured, cnts, -1, (0,255,0), 2)
 final = contoured.copy()
 
 # Check the '_id' in images.json to call it
+# After finalization, only use final img
 list_img = [
     #[_showflag, _encodeflag, _title, _var]
-    [0, 1, 'image', image],
+    [0, 0, 'image', image],
     [0, 0, 'cvt', cvt],
     [0, 0, 'imgaus', imgaus],
     [0, 0, 'thresh', thresh],
@@ -109,7 +110,7 @@ list_img = [
     [0, 0, 'sure_fg', sure_fg],
     [0, 0, 'unknown', unknown],
     [0, 0, 'smooth_border', smooth_border],
-    [0, 1, 'watershed_result', watershed_result],
+    [0, 0, 'watershed_result', watershed_result],
     [0, 0, 'edged', edged],
     [0, 0, 'res', res],
     [0, 0, 'contoured', contoured],

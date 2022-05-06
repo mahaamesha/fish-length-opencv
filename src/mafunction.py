@@ -46,8 +46,7 @@ def generate_imagesjson(list_img=s.list_img):
             f.write('\t\t"_id": ' + str(i) + ',\n')
             f.write('\t\t"_var": "' + list_img[i][2] + '",\n')
             f.write('\t\t"_showflag": ' + str(list_img[i][0]) + ',\n')
-            f.write('\t\t"_encodeflag": ' + str(list_img[i][1]) + ',\n')
-            f.write('\t\t"_encod": ' + '""' + '\n')
+            f.write('\t\t"_encodeflag": ' + str(list_img[i][1]) + '\n')
             if i != num_row-1: f.write('\t},\n')
             else: f.write('\t}\n')
         f.write('}')
@@ -124,12 +123,14 @@ def save_img(title, img):
 
 
 # save all to imgcv, source from images.json
+# to improve memory, I only save img with _encodeflag == 1
 def save_imgjson():
     print('Save all img listed in images.json:')
     with open('tmp/images.json', 'r') as fp:
         data = json.load(fp)
         for val in data.values():
-            save_img(val['_var'], s.list_img[ val['_id'] ][3])
+            if val['_encodeflag'] == 1:
+                save_img(val['_var'], s.list_img[ val['_id'] ][3])
     print()
 
 
@@ -165,8 +166,7 @@ def decode_img(title='final', format='.jpg'):  # check filename in folder imgcv
     print( str('\t' + path_imgcv).ljust(30,'.') + str('Done').rjust(5,' ') )
 
 
-# save img string to json
-# create new value "_encod"
+# save img string to json only if _encodflag == 1
 def encode_imgjson():
     print('Encode *.jpg in /imgcv/:')
     with open('tmp/images.json', 'r') as fp:
@@ -176,7 +176,6 @@ def encode_imgjson():
                 filename = val["_var"]
                 #val["_encod"] = str( encode_img(filename) )   # to save encoded str to images.json
                 encode_img(filename)
-                val["_encod"] = str( 'bin/' + filename + '.bin' )    # to save path file.bin to images.json
 
     with open('tmp/images.json', 'w') as fp:
         json.dump(data, fp, indent=4)   # write images.json
