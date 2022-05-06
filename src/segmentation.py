@@ -97,6 +97,7 @@ contoured = cv.drawContours(contoured, cnts, -1, (0,255,0), 2)
 final = contoured.copy()
 
 # Check the '_id' in images.json to call it
+# After finalization, only use final img
 list_img = [
     #[_showflag, _encodeflag, _title, _var]
     [0, 0, 'image', image],

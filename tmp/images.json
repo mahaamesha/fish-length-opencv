@@ -3,105 +3,90 @@
         "_id": 0,
         "_var": "image",
         "_showflag": 0,
-        "_encodeflag": 1,
-        "_encod": "bin/image.bin"
+        "_encodeflag": 0
     },
     "CVT": {
         "_id": 1,
         "_var": "cvt",
         "_showflag": 0,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_encodeflag": 0
     },
     "IMGAUS": {
         "_id": 2,
         "_var": "imgaus",
         "_showflag": 0,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_encodeflag": 0
     },
     "THRESH": {
         "_id": 3,
         "_var": "thresh",
         "_showflag": 0,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_encodeflag": 0
     },
     "ERODILA": {
         "_id": 4,
         "_var": "erodila",
         "_showflag": 0,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_encodeflag": 0
     },
     "SURE_BG": {
         "_id": 5,
         "_var": "sure_bg",
         "_showflag": 0,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_encodeflag": 0
     },
     "DIST_TRANSFORM": {
         "_id": 6,
         "_var": "dist_transform",
         "_showflag": 0,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_encodeflag": 0
     },
     "SURE_FG": {
         "_id": 7,
         "_var": "sure_fg",
         "_showflag": 0,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_encodeflag": 0
     },
     "UNKNOWN": {
         "_id": 8,
         "_var": "unknown",
         "_showflag": 0,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_encodeflag": 0
     },
     "SMOOTH_BORDER": {
         "_id": 9,
         "_var": "smooth_border",
         "_showflag": 0,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_encodeflag": 0
     },
     "WATERSHED_RESULT": {
         "_id": 10,
         "_var": "watershed_result",
         "_showflag": 0,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_encodeflag": 0
     },
     "EDGED": {
         "_id": 11,
         "_var": "edged",
-        "_showflag": 1,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_showflag": 0,
+        "_encodeflag": 0
     },
     "RES": {
         "_id": 12,
         "_var": "res",
-        "_showflag": 1,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_showflag": 0,
+        "_encodeflag": 0
     },
     "CONTOURED": {
         "_id": 13,
         "_var": "contoured",
         "_showflag": 0,
-        "_encodeflag": 0,
-        "_encod": ""
+        "_encodeflag": 0
     },
     "FINAL": {
         "_id": 14,
         "_var": "final",
         "_showflag": 1,
-        "_encodeflag": 1,
-        "_encod": "bin/final.bin"
+        "_encodeflag": 1
     }
 }
