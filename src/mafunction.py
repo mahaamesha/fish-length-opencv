@@ -208,7 +208,7 @@ def calc_area(cnts=s.cnts):
     area = []
     for cnt in cnts:
         area.append( cv.contourArea(cnt) )
-    print("area:", area)
+    #print("area:", area)
 
     return area
 
@@ -326,6 +326,36 @@ def get_fish_length():
     print( str('Measure fish length').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
 
 
+# This only work for contour > 1
+# If contour detected from len(s.cnts) == 1, I need avg_ref
+def validate_num_fish(iscondmatch=True, avg_ref=1e3):
+    area = calc_area(s.cnts)
+    copy = area[:]
+    err = 0.3
+    iscondmatch = bool( len(s.cnts) > 1 )
+    #print('area:', area)
+    for n in area:
+        if iscondmatch: avg = np.average(copy)
+        else: avg = avg_ref
+        lower = avg - err*avg
+        upper = avg + err*avg
+        #print(avg, lower, upper)
+        
+        # remove little area
+        if n < lower:
+            copy.remove(n)
+        # handle large area
+        elif n > upper:
+            factor = int(round(n / avg, 0))
+            copy.remove(n)
+            for i in range(factor):
+                avg = np.average(copy)
+                copy.append(avg)
+        #print('copy:', copy)
+    area = copy[:]
+    return len(area)
+
+
 def validate_fish_length():
     dt = []
     with open('tmp/fish_length.json', 'r') as fp:
@@ -416,7 +446,7 @@ def generate_resultjson():
         now = datetime.now()
         now = now.strftime("%m/%d/%Y %H:%M:%S")
         f.write('\t\t"datetime": "' + str(now) + '",\n')
-        f.write('\t\t"num_fish": ' + str( len(s.cnts) ) + ',\n')
+        f.write('\t\t"num_fish": ' + str( validate_num_fish() ) + ',\n')
         f.write('\t\t"avg_fishlength": ' + str( avg_fishlength() ) + '\n')
         f.write('\t}\n}')
 
@@ -477,4 +507,4 @@ def numbering_curve():
             y = int( np.average(val['y']) )
 
             text = '#' + str(num)
-            cv.putText(s.final, text, (x, y), cv.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,255), 2)
+            cv.putText(s.final, text, (x, y), cv.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,0), 2)
