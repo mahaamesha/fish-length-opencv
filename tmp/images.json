@@ -3,8 +3,8 @@
         "_id": 0,
         "_var": "image",
         "_showflag": 0,
-        "_encodeflag": 1,
-        "_encod": "bin/image.bin"
+        "_encodeflag": 0,
+        "_encod": ""
     },
     "CVT": {
         "_id": 1,
@@ -79,14 +79,14 @@
     "EDGED": {
         "_id": 11,
         "_var": "edged",
-        "_showflag": 1,
+        "_showflag": 0,
         "_encodeflag": 0,
         "_encod": ""
     },
     "RES": {
         "_id": 12,
         "_var": "res",
-        "_showflag": 1,
+        "_showflag": 0,
         "_encodeflag": 0,
         "_encod": ""
     },
