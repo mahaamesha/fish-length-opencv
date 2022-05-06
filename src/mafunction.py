@@ -5,7 +5,7 @@ import math
 import json
 import os
 import base64
-import datetime
+from datetime import datetime
 
 import src.segmentation as s
 
@@ -407,11 +407,25 @@ def generate_resultjson():
         f.write('{\n')
         f.write('\t"result": {\n')
         
-        now = datetime.datetime.now()
+        now = datetime.now()
+        now = now.strftime("%m/%d/%Y %H:%M:%S")
         f.write('\t\t"datetime": "' + str(now) + '",\n')
         f.write('\t\t"num_fish": ' + str( len(s.cnts) ) + ',\n')
         f.write('\t\t"avg_fishlength": ' + str( avg_fishlength() ) + '\n')
         f.write('\t}\n}')
+
+
+def get_info_resultjson(info='datetime'):
+    # info = 'datetime' | 'num_fish' | 'avg_fishlengh'
+    with open('tmp/result.json', 'r') as fp:
+        data = json.load(fp)
+
+        for val in data.values():
+            if info == 'avg_fishlength':
+                return str( round(val[info],2) )
+            else:
+                return str(val[info])
+            
 
 
 def plot_curve2img(title='final.jpg', showPlot=False):
@@ -430,31 +444,17 @@ def plot_curve2img(title='final.jpg', showPlot=False):
             y = data[key]['y']
             
             ax.plot(x, y, ls='dotted', linewidth=5, color='red')
-            fishlength_text(x,y)
     
+    # Add text: datetime, num_of_fish, avg_fishlength
+    dtt = get_info_resultjson('datetime')
+    num = get_info_resultjson('num_fish') + ' fish'
+    avg = get_info_resultjson('avg_fishlength') + ' mm'
+    text_str = str(dtt + ' | ' + num + ' | ' + avg)
+    ax.set_title(text_str)
+
     if showPlot: plt.show()
     plt.savefig('imgcv/final.jpg')
     s.final = cv.imread('imgcv/final.jpg')
     s.list_img[len(s.list_img)-1][2] = s.final
     print( str('Plot curve to original img').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
 
-
-def fishlength_text(x,y):
-    path = 'imgcv/final.jpg'
-    image = cv.imread(path)
-    
-    window_name = 'FINAL'
-    font = cv.FONT_HERSHEY_SIMPLEX
-    org = (int(x[0] ), int( y[0] ) )
-    fontScale = 1
-    color = (255, 0, 0)
-    thickness = 2
-    
-    with open('tmp/fish_length.json', 'r') as fp:
-        data = json.load(fp)
-
-        text_str = str( 'asad' )
-    image = cv.putText(image, text_str, org, font, 
-                    fontScale, color, thickness, cv.LINE_AA)
-    
-    cv.imshow(window_name, image)
