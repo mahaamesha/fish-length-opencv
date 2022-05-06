@@ -21,6 +21,7 @@ f.fit_poly()
 f.get_fish_length()
 
 #f.validate_fish_length()
+num_fish = f.validate_num_fish()
 
 # Save datetime, num_fish, avg_fishlength to result.json
 f.generate_resultjson()
@@ -30,7 +31,6 @@ f.numbering_curve()
 # Swow img whose _flag == 1
 f.show_imgjson()
 
-num_fish = f.validate_num_fish()
 print("Total number of contours: ", num_fish)
 
 #f.decode_imgjson()
