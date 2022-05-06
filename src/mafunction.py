@@ -124,12 +124,14 @@ def save_img(title, img):
 
 
 # save all to imgcv, source from images.json
+# to improve memory, I only save img with _encodeflag == 1
 def save_imgjson():
     print('Save all img listed in images.json:')
     with open('tmp/images.json', 'r') as fp:
         data = json.load(fp)
         for val in data.values():
-            save_img(val['_var'], s.list_img[ val['_id'] ][3])
+            if val['_encodeflag'] == 1:
+                save_img(val['_var'], s.list_img[ val['_id'] ][3])
     print()
 
 

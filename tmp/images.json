@@ -73,20 +73,20 @@
         "_id": 10,
         "_var": "watershed_result",
         "_showflag": 0,
-        "_encodeflag": 1,
-        "_encod": "bin/watershed_result.bin"
+        "_encodeflag": 0,
+        "_encod": ""
     },
     "EDGED": {
         "_id": 11,
         "_var": "edged",
-        "_showflag": 0,
+        "_showflag": 1,
         "_encodeflag": 0,
         "_encod": ""
     },
     "RES": {
         "_id": 12,
         "_var": "res",
-        "_showflag": 0,
+        "_showflag": 1,
         "_encodeflag": 0,
         "_encod": ""
     },
