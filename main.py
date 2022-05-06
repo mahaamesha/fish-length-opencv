@@ -6,22 +6,28 @@ import src.segmentation as s
 
 # Image segmentation process
 # Have been imported in mafunction.py
-f.generate_imagesjson()
-f.save_imgjson()
 
+# Initialize images.json
+f.generate_imagesjson()
+
+# Save & encode all img
+f.save_imgjson()
 f.encode_imgjson()
 
-
-#f.get_skeleton(thresh)
-#f.fit_line()
+# Create curve for each contour and save their points to points.json
 f.fit_poly()
+
+# Calculate fish length from each curve
 f.get_fish_length()
+
 #f.validate_fish_length()
-f.avg_fishlength()
+
+# Save datetime, num_fish, avg_fishlength to result.json
 f.generate_resultjson()
+# Plot curve to img with the result as title
 f.plot_curve2img()
-
-
+# Swow img whose _flag == 1
 f.show_imgjson()
 print("Total number of contours: ", len(s.cnts))
+
 #f.decode_imgjson()
