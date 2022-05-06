@@ -3,10 +3,8 @@ import cv2 as cv
 import imutils
 from matplotlib import markers
 import numpy as np
+from sympy import re
 import src.command as cmd
-
-
-
 
 # SETUP PARAMETER
 param = []
@@ -51,7 +49,7 @@ erodila = cv.erode(thresh, kernel, iterations=param[3][0])
 erodila = cv.dilate(erodila, kernel, iterations=param[3][1])
 
 
-# WATERSHED
+# WATERSHED to improve contour detection
 # Remove noise
 opening = cv.morphologyEx(erodila, cv.MORPH_CLOSE, kernel, iterations=3)
 # Sure background area
@@ -75,39 +73,45 @@ markers = cv.watershed(watershed_result, markers)
 # Mark boundary region with -1
 watershed_result[markers == -1] = [0, 255, 0]
 
-
+smooth_border = cv.dilate(sure_fg, kernel, iterations=11)
 
 # Detect the edge from BLACK WHITE img
-cv.Canny(sure_fg, param[4][0], param[4][1])
-edged = cv.dilate(sure_fg, kernel, iterations=11)
+edged = cv.Canny(smooth_border, param[4][0], param[4][1])
 
 # Extract object only with black background
-res = cv.bitwise_and(image,image, mask=erodila)
+res = cv.bitwise_and(image, image, mask=smooth_border)
 
 # (END) IMAGE SEGMENTATION PROCESS
 
 
-# IMAGE PROCESSING
+# FIND CONTOUR
 # Find many contour from BLACK WHITE img
-cnts = cv.findContours(edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+cnts = cv.findContours(smooth_border, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 cnts = imutils.grab_contours(cnts)
 
 contoured = image.copy()
 # Draw all contours in an img
-cv.drawContours(contoured, cnts, -1, (0,255,0), 2)
+contoured = cv.drawContours(contoured, cnts, -1, (0,255,0), 2)
 
 # for ploting curve
 final = contoured.copy()
 
 # Check the '_id' in images.json to call it
 list_img = [
-    image,
-    cvt,
-    imgaus,
-    thresh,
-    erodila,
-    edged,
-    res,
-    contoured,
-    final
+    #[_flag, _title, _var]
+    [0, 'image', image],
+    [0, 'cvt', cvt],
+    [0, 'imgaus', imgaus],
+    [0, 'thresh', thresh],
+    [0, 'erodila', erodila],
+    [0, 'sure_bg', sure_bg],
+    [0, 'dist_transform', dist_transform],
+    [0, 'sure_fg', sure_fg],
+    [0, 'unknown', unknown],
+    [0, 'smooth_border', smooth_border],
+    [0, 'watershed_result', watershed_result],
+    [0, 'edged', edged],
+    [0, 'res', res],
+    [0, 'contoured', contoured],
+    [1, 'final', final]
 ]

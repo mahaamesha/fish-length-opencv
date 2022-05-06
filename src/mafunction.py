@@ -33,6 +33,24 @@ def write_json(title, dict):
         json.dump(file_data, file, indent=4)
 
 
+def generate_imagesjson(list_img=s.list_img):
+    file = 'tmp/images.json'
+    with open(file, 'a'):
+        pass
+    with open(file, 'w') as f:
+        f.write('{\n')
+        num_row = len(list_img)
+        for i in range(num_row):
+            f.write('\t"' + list_img[i][1].upper() + '": {\n')
+            f.write('\t\t"_id": ' + str(i) + ',\n')
+            f.write('\t\t"_var": "' + list_img[i][1] + '",\n')
+            f.write('\t\t"_flag": ' + str(list_img[i][0]) + ',\n')
+            f.write('\t\t"_encod": ' + '""' + '\n')
+            if i != num_row-1: f.write('\t},\n')
+            else: f.write('\t}\n')
+        f.write('}')
+    print( str('Generate images.json').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
+
 def points2json(title, dict):
     # dict = {
     #   'x': [...], 
@@ -90,7 +108,7 @@ def show_imgjson():
 
         for val in data.values():
             if val['_flag']:
-                show_img(val['_var'], s.list_img[ val['_id'] ])
+                show_img(val['_var'], s.list_img[ val['_id'] ][2])
     print()
         
 
@@ -109,7 +127,7 @@ def save_imgjson():
     with open('tmp/images.json', 'r') as fp:
         data = json.load(fp)
         for val in data.values():
-            save_img(val['_var'], s.list_img[ val['_id'] ])
+            save_img(val['_var'], s.list_img[ val['_id'] ][2])
     print()
 
 
@@ -385,5 +403,5 @@ def plot_curve2img(title='final.jpg', showPlot=False):
     if showPlot: plt.show()
     plt.savefig('imgcv/final.jpg')
     s.final = cv.imread('imgcv/final.jpg')
-    s.list_img[len(s.list_img)-1] = s.final
+    s.list_img[len(s.list_img)-1][2] = s.final
     print( str('Plot curve to original img').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
