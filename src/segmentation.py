@@ -98,20 +98,20 @@ final = contoured.copy()
 
 # Check the '_id' in images.json to call it
 list_img = [
-    #[_flag, _title, _var]
-    [0, 'image', image],
-    [0, 'cvt', cvt],
-    [0, 'imgaus', imgaus],
-    [0, 'thresh', thresh],
-    [0, 'erodila', erodila],
-    [0, 'sure_bg', sure_bg],
-    [0, 'dist_transform', dist_transform],
-    [0, 'sure_fg', sure_fg],
-    [0, 'unknown', unknown],
-    [0, 'smooth_border', smooth_border],
-    [0, 'watershed_result', watershed_result],
-    [0, 'edged', edged],
-    [0, 'res', res],
-    [0, 'contoured', contoured],
-    [1, 'final', final]
+    #[_showflag, _encodeflag, _title, _var]
+    [0, 1, 'image', image],
+    [0, 0, 'cvt', cvt],
+    [0, 0, 'imgaus', imgaus],
+    [0, 0, 'thresh', thresh],
+    [0, 0, 'erodila', erodila],
+    [0, 0, 'sure_bg', sure_bg],
+    [0, 0, 'dist_transform', dist_transform],
+    [0, 0, 'sure_fg', sure_fg],
+    [0, 0, 'unknown', unknown],
+    [0, 0, 'smooth_border', smooth_border],
+    [0, 1, 'watershed_result', watershed_result],
+    [0, 0, 'edged', edged],
+    [0, 0, 'res', res],
+    [0, 0, 'contoured', contoured],
+    [1, 1, 'final', final]
 ]
