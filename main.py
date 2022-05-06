@@ -17,7 +17,8 @@ f.encode_imgjson()
 f.fit_poly()
 f.get_fish_length()
 #f.validate_fish_length()
-
+f.avg_fishlength()
+f.generate_resultjson()
 f.plot_curve2img()
 
 
