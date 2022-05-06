@@ -433,7 +433,6 @@ def get_info_resultjson(info='datetime'):
                 return str(val[info])
             
 
-
 def plot_curve2img(title='final.jpg', showPlot=False):
     plt.rcParams["figure.autolayout"] = True
 
@@ -450,8 +449,9 @@ def plot_curve2img(title='final.jpg', showPlot=False):
             y = data[key]['y']
             
             ax.plot(x, y, ls='dotted', linewidth=5, color='red')
+
     
-    # Add text: datetime, num_of_fish, avg_fishlength
+    # Add title: datetime, num_of_fish, avg_fishlength
     dtt = get_info_resultjson('datetime')
     num = get_info_resultjson('num_fish') + ' fish'
     avg = get_info_resultjson('avg_fishlength') + ' mm'
@@ -464,3 +464,17 @@ def plot_curve2img(title='final.jpg', showPlot=False):
     s.list_img[len(s.list_img)-1][3] = s.final
     print( str('Plot curve to original img').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
 
+
+def numbering_curve():
+    with open('tmp/points.json', 'r') as fp:
+        data = json.load(fp)
+
+        num = 0
+        for val in data.values():
+            num += 1
+            
+            x = int( np.average(val['x']) )
+            y = int( np.average(val['y']) )
+
+            text = '#' + str(num)
+            cv.putText(s.final, text, (x, y), cv.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,255), 2)

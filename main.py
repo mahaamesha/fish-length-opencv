@@ -26,6 +26,7 @@ f.get_fish_length()
 f.generate_resultjson()
 # Plot curve to img with the result as title
 f.plot_curve2img()
+f.numbering_curve()
 # Swow img whose _flag == 1
 f.show_imgjson()
 print("Total number of contours: ", len(s.cnts))
