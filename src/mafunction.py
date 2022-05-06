@@ -208,7 +208,7 @@ def calc_area(cnts=s.cnts):
     area = []
     for cnt in cnts:
         area.append( cv.contourArea(cnt) )
-    print("area:", area)
+    #print("area:", area)
 
     return area
 
@@ -326,23 +326,63 @@ def get_fish_length():
     print( str('Measure fish length').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
 
 
-def validate_fish_length():
-    dt = []
-    with open('tmp/fish_length.json', 'r') as fp:
+# This will be better if len(data) > 1
+def validate_data(data):
+    copy = data[:]
+    err = 0.3
+    #print('data:', data)
+    for n in data:
+        avg = np.average(copy)
+        lower = avg - err*avg
+        upper = avg + err*avg
+        #print(avg, lower, upper)
+        
+        # remove small data
+        if n < lower:
+            copy.remove(n)
+        # handle large data
+        elif n > upper:
+            factor = int(round(n / avg, 0))
+            copy.remove(n)
+            for i in range(factor):
+                avg = np.average(copy)
+                copy.append(avg)
+        #print('copy:', copy)
+    data = copy[:]
+    return data
+
+
+# This will be better if len(data) > 1
+def validate_num_fish():
+    area = calc_area(s.cnts)    # array of floats
+    area = validate_data(area)
+    return len(area)
+
+
+# This will be better if len(data) > 1
+def validate_fishlength():
+    fishlength = []
+    fish_length = {}
+    file = 'tmp/fish_length.json'
+    with open(file, 'r') as fp:
         data = json.load(fp)
+        
         for val in data.values():
-            dt.append(val['length'])
+            fishlength.append(val['length'])       
+        fishlength = validate_data(fishlength)
+
+        i = 0
+        for val in data.values():
+            A = fish_length[str('fish_' + str(i))] = {}
+            A.update( {'length': fishlength[i]} )
+            i += 1
+
+    # Revision fish_length.json
+    clear_json_file('fish_length')
+    with open(file, 'w') as fp:
+        json.dump(fish_length, fp, indent=4)
     
-    # Compare i with average
-    std = np.std(dt)
-    avr = np.average(dt)
-
-    print(avr)
-    print(std)
-    print(avr-std, avr+std)
-
-    lower = np.quantile(dt, 0.75)
-    upper = np.quantile(dt, 1.00)
+    return np.average(fishlength)
 
 
 points = {}
@@ -416,7 +456,7 @@ def generate_resultjson():
         now = datetime.now()
         now = now.strftime("%m/%d/%Y %H:%M:%S")
         f.write('\t\t"datetime": "' + str(now) + '",\n')
-        f.write('\t\t"num_fish": ' + str( len(s.cnts) ) + ',\n')
+        f.write('\t\t"num_fish": ' + str( validate_num_fish() ) + ',\n')
         f.write('\t\t"avg_fishlength": ' + str( avg_fishlength() ) + '\n')
         f.write('\t}\n}')
 
@@ -477,4 +517,4 @@ def numbering_curve():
             y = int( np.average(val['y']) )
 
             text = '#' + str(num)
-            cv.putText(s.final, text, (x, y), cv.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,255), 2)
+            cv.putText(s.final, text, (x, y), cv.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,0), 2)
