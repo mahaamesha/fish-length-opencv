@@ -3,7 +3,6 @@ import cv2 as cv
 import imutils
 from matplotlib import markers
 import numpy as np
-from sympy import re
 import src.command as cmd
 
 # SETUP PARAMETER
