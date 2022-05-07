@@ -20,7 +20,7 @@ f.fit_poly()
 # Calculate fish length from each curve
 f.get_fish_length()
 
-#f.validate_fish_length()
+# Validating
 num_fish = f.validate_num_fish()
 fishlength = f.validate_fishlength()
 
