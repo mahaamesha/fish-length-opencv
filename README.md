@@ -39,7 +39,7 @@ The core of the result is based on image segmentation process.
                     copy.append(avg)
         ...
     ```
-- **Further Process**
+- **Further Process** \
     I prepare the result to be saved as **.json** and **.bin** file. So, when I need to save the result to database, I can extract the measurement result from json file and the image from bin file.
     > Bin file is encoded string from the image. I can save the encoded string to database. To show the image, I only need to decode the string.
 
