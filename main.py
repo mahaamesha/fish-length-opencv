@@ -25,7 +25,7 @@ fishlength = f.validate_fishlength()
 
 # Save datetime, num_fish, avg_fishlength to result.json
 f.generate_resultjson()
-# Plot curve to img with the result as title
+# Plot curve to img with the result as title. Then, save final.jpg
 f.plot_curve2img()
 f.numbering_curve()
 # Swow img whose _flagshow == 1

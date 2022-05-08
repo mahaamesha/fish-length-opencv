@@ -142,7 +142,6 @@ def encode_img(title='final'):
 
 	with open(path_imgcv, 'rb') as image2string:
 		converted_string = base64.b64encode(image2string.read())
-	#print(converted_string)
 	
 	with open(path_bin, 'wb') as file:
 		file.write(converted_string)
@@ -175,8 +174,7 @@ def encode_imgjson():
 		for val in data.values():
 			if val["_encodeflag"] == 1:     # change _encodeflag in segmentation.py
 				filename = val["_var"]
-				#val["_encod"] = str( encode_img(filename) )   # to save encoded str to images.json
-				encode_img(filename)
+				encode_img(filename)	# save to  filename.bin
 
 	with open('tmp/images.json', 'w') as fp:
 		json.dump(data, fp, indent=4)   # write images.json
@@ -190,6 +188,19 @@ def decode_imgjson():
 		for val in tmp_img.values():
 			decode_img( str(val['_var']))
 	print()
+
+
+def add_encode_resultjson(key_name='0.jpg'):
+	with open('tmp/result.json', 'r') as fp:
+		data = json.load(fp)
+
+		# Load the encoded string from bin file & input it to ENCODED key
+		with open('bin/final.bin', 'r') as bfp:
+			encoded_str = bfp.read()
+			data[key_name]['encoded'] = str(encoded_str)
+	
+	with open('tmp/result.json', 'w') as fp:
+		json.dump(data, fp, indent=4)
 
 
 def calc_perimeter(cnts=s.cnts):
@@ -383,7 +394,7 @@ def validate_fishlength():
 	return np.average(fishlength)
 
 
-def append_by_key_resultjson(measurement='num_fish'):
+def append_by_key_resultjson(measurement='avr_fishlength'):
 	# key: datetime, num_fish, avg_fishlength, encoded
 	file = 'tmp/result.json'
 	arr = []
@@ -403,7 +414,7 @@ def validate_resultjson():
 
 	# Choose the best data
 	avg = np.average(result_avg_fishlength)
-	nearest = avg.copy()
+	nearest = result_avg_fishlength[0]
 	best = result_avg_fishlength[0]
 	for n in result_avg_fishlength:
 		if abs(n - avg) < nearest:
@@ -418,9 +429,7 @@ def validate_resultjson():
 		for key in data.keys():
 			if data[key]['avg_fishlength'] == best:
 				tmp = data[key]
-		data = {}	# To delete all KEY, except RESULT key
-		data['result'] = tmp
-				
+		data = {'result': tmp.copy()}
 				
 	with open(file, 'w') as fp:
 		json.dump(data, fp, indent=4)
@@ -429,11 +438,12 @@ def validate_resultjson():
 # To update final.bin & final.jpg
 def update_files_from_resultjson():
 	file = 'tmp/result.json'
-	new_encoded = ''
-	with open(file, 'r+') as fp:
+	with open(file, 'r') as fp:
 		data = json.load(fp)
-		new_encoded = data['result']['encoded']
+		new_encoded = (data['result']['encoded']).copy()
 		data['result']['encoded'] = 'bin/final.bin'
+	with open(file, 'w') as fp:
+		json.dump(data, fp)
 
 	bin_file = 'bin/final.bin'
 	with open(bin_file, 'w') as bfp:
@@ -522,19 +532,18 @@ def generate_resultjson():
 		now = now.strftime("%m/%d/%Y %H:%M:%S")
 		num = validate_num_fish()
 		avg = avg_fishlength() 
-		with open('bin/final.bin', 'r') as fpa:
-			enc = fpa.read()
 		
 		# Temporary dictionary
 		tmp = {
 			"datetime": now,
 			"num_fish": num,
 			"avg_fishlength": avg,
-			"encoded": enc
+			"encoded": ''	# later, in f.encode_imgjson()
 		}
 
 		# Create new key based on img path
-		data[cmd.args["image"]] = tmp
+		key_name = str(cmd.args["image"]).replace('img/', '')
+		data[key_name] = tmp
 	
 	# Write the json file
 	with open(file, 'w') as fp:
@@ -546,7 +555,8 @@ def get_info_resultjson(info='datetime'):
 	with open('tmp/result.json', 'r') as fp:
 		data = json.load(fp)
 		for key in data.keys():
-			if key == cmd.args['image']:
+			key_name = str(cmd.args['image']).replace('img/', '')
+			if key == key_name:
 				if info == 'avg_fishlength':
 					return str( round(data[key][info],2) )
 				else:
@@ -581,7 +591,6 @@ def plot_curve2img(title='final.jpg', showPlot=False):
 	if showPlot: plt.show()
 	plt.savefig('imgcv/final.jpg')
 	s.final = cv.imread('imgcv/final.jpg')
-	s.list_img[len(s.list_img)-1][3] = s.final
 	print( str('Plot curve to original img').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
 
 
@@ -598,3 +607,4 @@ def numbering_curve():
 
 			text = '#' + str(num)
 			cv.putText(s.final, text, (x, y), cv.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,0), 2)
+	cv.imwrite('imgcv/final.jpg', s.final)
