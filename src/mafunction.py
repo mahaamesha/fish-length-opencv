@@ -440,24 +440,6 @@ def avg_fishlength():
 		#print('avg', avg)
 	return avg
 
-'''
-def generate_resultjson():
-	file = 'tmp/result.json'
-	if is_file_empty(file):
-		with open(file, 'a'):
-			pass
-
-	with open(file, 'w') as f:
-		f.write('{\n')
-		f.write('\t"result": {\n')
-		
-		now = datetime.now()
-		now = now.strftime("%m/%d/%Y %H:%M:%S")
-		f.write('\t\t"datetime": "' + str(now) + '",\n')
-		f.write('\t\t"num_fish": ' + str( validate_num_fish() ) + ',\n')
-		f.write('\t\t"avg_fishlength": ' + str( avg_fishlength() ) + '\n')
-		f.write('\t}\n}')
-'''
 
 def generate_resultjson():
 	file = 'tmp/result.json'
