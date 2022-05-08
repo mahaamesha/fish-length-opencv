@@ -152,8 +152,8 @@ def encode_img(title='final'):
 	
 
 # string to img
-def decode_img(title='final', format='.jpg'):  # check filename in folder imgcv
-	path_imgcv = 'imgcv/' + title + format
+def decode_img(title='final'):  # check filename in folder imgcv
+	path_imgcv = 'imgcv/' + title + '.jpg'
 	path_bin = 'bin/' + title + '.bin'
 
 	file = open(path_bin, 'rb')
@@ -394,13 +394,52 @@ def append_by_key_resultjson(measurement='num_fish'):
 				arr.append( data[key][measurement] )
 	return arr
 
+
 # Last validation process & update the RESULT key
 def validate_resultjson():
-	
-	pass
-	
-			
+	# Eliminate noise
+	result_avg_fishlength = append_by_key_resultjson('avg_fishlength')
+	result_avg_fishlength = validate_data(result_avg_fishlength)
 
+	# Choose the best data
+	avg = np.average(result_avg_fishlength)
+	nearest = avg.copy()
+	best = result_avg_fishlength[0]
+	for n in result_avg_fishlength:
+		if abs(n - avg) < nearest:
+			nearest = abs(n - avg)
+			best = n
+	
+	# Check the data in result.json and save into RESULT key
+	tmp = {}
+	file = 'tmp/result.json'
+	with open(file, 'r') as fp:
+		data = json.load(fp)
+		for key in data.keys():
+			if data[key]['avg_fishlength'] == best:
+				tmp = data[key]
+		data = {}	# To delete all KEY, except RESULT key
+		data['result'] = tmp
+				
+				
+	with open(file, 'w') as fp:
+		json.dump(data, fp, indent=4)
+
+
+# To update final.bin & final.jpg
+def update_files_from_resultjson():
+	file = 'tmp/result.json'
+	new_encoded = ''
+	with open(file, 'r+') as fp:
+		data = json.load(fp)
+		new_encoded = data['result']['encoded']
+		data['result']['encoded'] = 'bin/final.bin'
+
+	bin_file = 'bin/final.bin'
+	with open(bin_file, 'w') as bfp:
+		bfp.write(new_encoded)
+	
+	decode_img('final')
 
 
 points = {}

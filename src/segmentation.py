@@ -113,5 +113,5 @@ list_img = [
     [0, 0, 'edged', edged],
     [0, 0, 'res', res],
     [0, 0, 'contoured', contoured],
-    [1, 1, 'final', final]
+    [0, 1, 'final', final]
 ]
