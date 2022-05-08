@@ -1,5 +1,7 @@
 import os, json
 
+from src.mafunction import clear_json_file
+
 #path = 'test/0507_02/img'
 path = 'img'
 
@@ -12,17 +14,16 @@ for (root, dirs, file) in os.walk(path):
 
 print(list)
 
+clear_json_file('result')
 for f in list:
 	# cmd /k : remain after run
 	# cmd /c : terminate after run
 	os.system('cmd /c "python main.py -i img/%s"' %f)
 	print('cmd /c "python main.py -i img/%s"' %f)
 
-	#tmp_num = []
-	#tmp_length = []
-	#tmp_encod = []
 	#print('tampung nilai num_fish & fishlength & encoded_string')	# ada 5 data untuk setiap list
 	
 	# Create tmp.json
 	# Access data from result.json in fish-length-opencv
+
 	# Append the dict into tmp.json
