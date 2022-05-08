@@ -383,6 +383,26 @@ def validate_fishlength():
 	return np.average(fishlength)
 
 
+def append_by_key_resultjson(measurement='num_fish'):
+	# key: datetime, num_fish, avg_fishlength, encoded
+	file = 'tmp/result.json'
+	arr = []
+	with open(file, 'r') as fp:
+		data = json.load(fp)
+		for key in data.keys():
+			if key != 'result':
+				arr.append( data[key][measurement] )
+	return arr
+
+# Last validation process & update the RESULT key
+def validate_resultjson():
+	
+	pass
+	
+			
+
+
+
 points = {}
 def fit_poly(cnts=s.cnts, showPlot=False, option=1):
 	# option to choose: 1 more points used | 0 fewer points used
