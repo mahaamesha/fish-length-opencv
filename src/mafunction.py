@@ -438,17 +438,20 @@ def validate_resultjson():
 # To update final.bin & final.jpg
 def update_files_from_resultjson():
 	file = 'tmp/result.json'
+	# Copy encoded string from ENCODED key into new_encoded
 	with open(file, 'r') as fp:
 		data = json.load(fp)
-		new_encoded = (data['result']['encoded']).copy()
-		data['result']['encoded'] = 'bin/final.bin'
+		new_encoded = (data['result']['encoded'])
+		data['result']['encoded'] = 'bin/final.bin'		# To reduce memory size
 	with open(file, 'w') as fp:
-		json.dump(data, fp)
+		json.dump(data, fp, indent=4)
 
+	# Save encoded string from new_encoded into final.bin
 	bin_file = 'bin/final.bin'
 	with open(bin_file, 'w') as bfp:
 		bfp.write(new_encoded)
 	
+	# Use final.bin to decode img. It will be saved as final.jpg in imgcv/
 	decode_img('final')
 
 
