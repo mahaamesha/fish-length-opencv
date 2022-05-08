@@ -47,13 +47,13 @@ The core of the result is based on image segmentation process.
 
 ## Usage <a name='usage'></a>
 To run this system, type this below in CMD.
-- For `**v1.0.0**`:
+- For **`v1.0.0`**:
     ```
     python main.py -i img/lele.jpg -w 1
     ```
     > I set the default `-i` for `lele.jpg` with `-w 1`. So, I also run it by `python main.py` sometimes.
 
-- For `**v2.0.0**`:
+- For **`v2.0.0`**:
     ```
     python run.py
     ```
