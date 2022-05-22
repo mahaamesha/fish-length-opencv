@@ -1,9 +1,9 @@
 import os
 
-from src.mafunction import add_encode_resultjson, clear_json_file, update_files_from_resultjson, validate_resultjson
+from src.mafunction import get_path, add_encode_resultjson, clear_json_file, update_files_from_resultjson, validate_resultjson
 
-#path = 'test/0507_02/img'
-path = 'img'
+# Get the path of this file --> ~/fish-length-opencv/
+path = get_path('img/')
 
 list = []
 # Scan all file.jpg in img/

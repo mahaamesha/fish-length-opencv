@@ -11,6 +11,17 @@ import src.segmentation as s
 import src.command as cmd
 
 
+def get_path(path2=''):
+	# Fill the arguments with filename or dir/filename: 
+	# 'filename.format' or 'directory/filename.format'
+	running_file_path = os.getcwd()
+	if path2 == '':
+		return running_file_path
+	else:
+		path = os.path.join(running_file_path, path2)
+		return path
+
+
 def is_file_empty(file_path):
 	""" Check if file is empty by confirming if its size is 0 bytes"""
 	return os.path.exists(file_path) and os.stat(file_path).st_size == 0
