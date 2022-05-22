@@ -16,7 +16,7 @@ clear_json_file('result')
 for f in list:
 	# cmd /k : remain after run
 	# cmd /c : terminate after run
-	os.system('cmd /c "python main.py -i img/%s"' %f)
+	os.system('cmd /c "python main.py --image img/%s"' %f)
 
 	# In this step, in result.json, "encoded": ""
 	# Add the encoded string to result.json for each image
