@@ -11,15 +11,26 @@ import src.segmentation as s
 import src.command as cmd
 
 
-def get_path(path2=''):
+def get_path_relative_to_src(path2=''):
 	# Fill the arguments with filename or dir/filename: 
 	# 'filename.format' or 'directory/filename.format'
-	running_file_path = os.getcwd()
+	# Relative from this file path --> src/ folder
+	running_file_path = os.path.dirname(__file__)
 	if path2 == '':
 		return running_file_path
 	else:
 		path = os.path.join(running_file_path, path2)
 		return path
+
+
+def only_last_path(full_path='srcpath\../dirname/filename.format'):
+	# Use full_path from get_path_relative_to_src()
+	limit_slash = 2
+	for i in range(len(full_path)-1, -1, -1):
+		if full_path[i] == '/':
+			limit_slash -= 1
+			if limit_slash == 0:
+				return str(full_path[i:])
 
 
 def is_file_empty(file_path):
@@ -29,14 +40,14 @@ def is_file_empty(file_path):
 
 def clear_json_file(title):
 	filename = title + '.json'
-	path = 'tmp/' + filename
+	path = get_path_relative_to_src('../tmp/') + filename
 	with open(path,'w'):
 		pass
 
 
 def write_json(title, dict):
 	filename = title + '.json'
-	path = 'tmp/' + filename
+	path = get_path_relative_to_src('../tmp/') + filename
 
 	with open(path,'r+') as file:
 		file_data = json.load(file)
@@ -47,10 +58,10 @@ def write_json(title, dict):
 
 
 def generate_imagesjson(list_img=s.list_img):
-	file = 'tmp/images.json'
-	with open(file, 'a'):
+	path = get_path_relative_to_src('../tmp/images.json')
+	with open(path, 'a'):
 		pass
-	with open(file, 'w') as f:
+	with open(path, 'w') as f:
 		f.write('{\n')
 		num_row = len(list_img)
 		for i in range(num_row):
@@ -75,7 +86,7 @@ def points2json(title, dict):
 	#       'y': [...]
 	#   }, ...
 	filename = title + '.json'
-	path = 'tmp/' + filename
+	path = get_path_relative_to_src('../tmp/') + filename
 
 	with open(path, 'r') as fr:
 		if (not is_file_empty(path)):
@@ -95,7 +106,8 @@ def points2json(title, dict):
 
 # check images.json, return '_id'
 def get_id_imgjson(_var):    # input string, ex: 'images'
-	with open('tmp/images.json', 'r') as fp:
+	path = get_path_relative_to_src('../tmp/images.json')
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 		for key in data.keys():
 			var = data[key]['_var']
@@ -116,7 +128,8 @@ def show_img(title, img, destroy_all=False):
 # to not show, set the '_flag' to 0 in images.json
 def show_imgjson():
 	print(str('Show selected img listed in images.json:'))
-	with open('tmp/images.json', 'r') as fp:
+	path = get_path_relative_to_src('../tmp/images.json')
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 
 		for val in data.values():
@@ -127,18 +140,19 @@ def show_imgjson():
 
 def save_img(title, img):
 	filename = title + '.jpg'
-	path = 'imgcv/' + filename
+	path = get_path_relative_to_src('../imgcv/') + filename
 	status = cv.imwrite(path, img)
 	# folder should be initialized first
 	
-	print( str('\t' + path).ljust(30,'.') + str(status).rjust(5,' ') )
+	print( str('\t' + only_last_path(path)).ljust(30,'.') + str(status).rjust(5,' ') )
 
 
 # save all to imgcv, source from images.json
 # to improve memory, I only save img with _encodeflag == 1
 def save_imgjson():
 	print('Save all img listed in images.json:')
-	with open('tmp/images.json', 'r') as fp:
+	path = get_path_relative_to_src('../tmp/images.json')
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 		for val in data.values():
 			if val['_encodeflag'] == 1:
@@ -148,8 +162,8 @@ def save_imgjson():
 
 # img to string
 def encode_img(title='final'):
-	path_imgcv = 'imgcv/' + title + '.jpg'
-	path_bin = 'bin/' + title + '.bin'
+	path_imgcv = get_path_relative_to_src('../imgcv/') + title + '.jpg'
+	path_bin = get_path_relative_to_src('../bin/') + title + '.bin'
 
 	with open(path_imgcv, 'rb') as image2string:
 		converted_string = base64.b64encode(image2string.read())
@@ -157,14 +171,14 @@ def encode_img(title='final'):
 	with open(path_bin, 'wb') as file:
 		file.write(converted_string)
 	
-	print(str('\t' + path_bin).ljust(30,'.') + str('Done').rjust(5,' '))
+	print(str('\t' + only_last_path(path_bin)).ljust(30,'.') + str('Done').rjust(5,' '))
 	return str(converted_string)
 	
 
 # string to img
 def decode_img(title='final'):  # check filename in folder imgcv
-	path_imgcv = 'imgcv/' + title + '.jpg'
-	path_bin = 'bin/' + title + '.bin'
+	path_imgcv = get_path_relative_to_src('../imgcv/') + title + '.jpg'
+	path_bin = get_path_relative_to_src('../bin/') + title + '.bin'
 
 	file = open(path_bin, 'rb')
 	byte = file.read()
@@ -174,43 +188,49 @@ def decode_img(title='final'):  # check filename in folder imgcv
 	decodeit.write(base64.b64decode((byte)))
 	decodeit.close()
 	
-	print( str('\t' + path_imgcv).ljust(30,'.') + str('Done').rjust(5,' ') )
+	print( str('\t' + only_last_path(path_imgcv)).ljust(30,'.') + str('Done').rjust(5,' ') )
 
 
 # save img string to json only if _encodflag == 1
 def encode_imgjson():
 	print('Encode *.jpg in /imgcv/:')
-	with open('tmp/images.json', 'r') as fp:
+	path = get_path_relative_to_src('../tmp/images.json')
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 		for val in data.values():
 			if val["_encodeflag"] == 1:     # change _encodeflag in segmentation.py
 				filename = val["_var"]
 				encode_img(filename)	# save to  filename.bin
 
-	with open('tmp/images.json', 'w') as fp:
+	with open(path, 'w') as fp:
 		json.dump(data, fp, indent=4)   # write images.json
 	print()
 
 
 def decode_imgjson():
 	print('Decode *.bin in /bin/:')
-	with open('tmp/images.json', 'r') as fp:
-		tmp_img = json.load(fp)
-		for val in tmp_img.values():
-			decode_img( str(val['_var']))
+	path = get_path_relative_to_src('../tmp/images.json')
+	with open(path, 'r') as fp:
+		data = json.load(fp)
+		for val in data.values():
+			if val["_encodeflag"] == 1:
+				decode_img( str(val['_var']))
 	print()
 
 
 def add_encode_resultjson(key_name='0.jpg'):
-	with open('tmp/result.json', 'r') as fp:
+	path = get_path_relative_to_src('../tmp/result.json')
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 
 		# Load the encoded string from bin file & input it to ENCODED key
-		with open('bin/final.bin', 'r') as bfp:
+		path = get_path_relative_to_src('../bin/final.bin')
+		with open(path, 'r') as bfp:
 			encoded_str = bfp.read()
 			data[key_name]['encoded'] = str(encoded_str)
 	
-	with open('tmp/result.json', 'w') as fp:
+	path = get_path_relative_to_src('../tmp/result.json')
+	with open(path, 'w') as fp:
 		json.dump(data, fp, indent=4)
 
 
@@ -333,14 +353,16 @@ def curve_length(dict_points):  # distance of 2 points: A and B
 # measure fish length with data from points.json
 def get_fish_length():
 	fish_length = {}
-	with open('tmp/points.json', 'r') as fp:
+	path = get_path_relative_to_src('../tmp/points.json')
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 		for key in data.keys(): # key are "curve_0", "curve_1", ...
 			A = fish_length[str('fish_'+ key[6:])] = {}
 			A.update( {'length': curve_length(data[key])} )
 	
 	# Write it to fish_length.json
-	with open('tmp/fish_length.json', 'w') as fp:
+	path = get_path_relative_to_src('../tmp/fish_length.json')
+	with open(path, 'w') as fp:
 		json.dump(fish_length, fp, indent=4)
 
 	print( str('Measure fish length').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
@@ -383,8 +405,9 @@ def validate_num_fish():
 def validate_fishlength():
 	fishlength = []
 	fish_length = {}
-	file = 'tmp/fish_length.json'
-	with open(file, 'r') as fp:
+	
+	path = get_path_relative_to_src('../tmp/fish_length.json')
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 		
 		for val in data.values():
@@ -399,7 +422,7 @@ def validate_fishlength():
 
 	# Revision fish_length.json
 	clear_json_file('fish_length')
-	with open(file, 'w') as fp:
+	with open(path, 'w') as fp:
 		json.dump(fish_length, fp, indent=4)
 	
 	return np.average(fishlength)
@@ -407,9 +430,9 @@ def validate_fishlength():
 
 def append_by_key_resultjson(measurement='avr_fishlength'):
 	# key: datetime, num_fish, avg_fishlength, encoded
-	file = 'tmp/result.json'
+	path = get_path_relative_to_src('../tmp/result.json')
 	arr = []
-	with open(file, 'r') as fp:
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 		for key in data.keys():
 			if key != 'result':
@@ -434,36 +457,36 @@ def validate_resultjson():
 	
 	# Check the data in result.json and save into RESULT key
 	tmp = {}
-	file = 'tmp/result.json'
-	with open(file, 'r') as fp:
+	path = get_path_relative_to_src('../tmp/result.json')
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 		for key in data.keys():
 			if data[key]['avg_fishlength'] == best:
 				tmp = data[key]
 		data = {'result': tmp.copy()}
 				
-	with open(file, 'w') as fp:
+	with open(path, 'w') as fp:
 		json.dump(data, fp, indent=4)
 
 
 # To update final.bin & final.jpg
 def update_files_from_resultjson():
-	file = 'tmp/result.json'
+	path = get_path_relative_to_src('../tmp/result.json')
 	# Copy encoded string from ENCODED key into new_encoded
-	with open(file, 'r') as fp:
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 		new_encoded = (data['result']['encoded'])
 		data['result']['encoded'] = 'bin/final.bin'		# To reduce memory size
-	with open(file, 'w') as fp:
+	with open(path, 'w') as fp:
 		json.dump(data, fp, indent=4)
 
 	# Save encoded string from new_encoded into final.bin
-	bin_file = 'bin/final.bin'
-	with open(bin_file, 'w') as bfp:
+	path = get_path_relative_to_src('../bin/final.bin')
+	with open(path, 'w') as bfp:
 		bfp.write(new_encoded)
 	
 	# Use final.bin to decode img. It will be saved as final.jpg in imgcv/
-	decode_img('final')
+	decode_imgjson()
 
 
 points = {}
@@ -512,7 +535,8 @@ def fit_poly(cnts=s.cnts, showPlot=False, option=1):
 
 
 def avg_fishlength():
-	with open('tmp/fish_length.json', 'r') as fp:
+	path = get_path_relative_to_src('../tmp/fish_length.json')
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 
 		sum = 0
@@ -525,11 +549,11 @@ def avg_fishlength():
 
 
 def generate_resultjson():
-	file = 'tmp/result.json'
-	with open(file, 'a'):
+	path = get_path_relative_to_src('../tmp/result.json')
+	with open(path, 'a'):
 			pass
-	if is_file_empty(file):
-		with open(file, 'w') as f:
+	if is_file_empty(path):
+		with open(path, 'w') as f:
 			f.write('{\n')
 			f.write('\t"result": \n\t{\n')
 			f.write('\t\t"datetime": "edit_later",\n')
@@ -538,7 +562,7 @@ def generate_resultjson():
 			f.write('\t\t"encoded": "edit_later"\n')
 			f.write('\t}\n}')
 	
-	with open(file, 'r') as fp:
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 
 		# Variable that will be saved temporarily
@@ -560,13 +584,14 @@ def generate_resultjson():
 		data[key_name] = tmp
 	
 	# Write the json file
-	with open(file, 'w') as fp:
+	with open(path, 'w') as fp:
 		json.dump(data, fp, indent=4)
 
 
 def get_info_resultjson(info='datetime'):
 	# info = 'datetime' | 'num_fish' | 'avg_fishlengh'
-	with open('tmp/result.json', 'r') as fp:
+	path = get_path_relative_to_src('../tmp/result.json')
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 		for key in data.keys():
 			key_name = str(cmd.args['image']).replace('img/', '')
@@ -580,11 +605,13 @@ def get_info_resultjson(info='datetime'):
 def plot_curve2img(title='final.jpg', showPlot=False):
 	plt.rcParams["figure.autolayout"] = True
 
-	im = plt.imread('imgcv/'+title)
+	path = get_path_relative_to_src('../imgcv/') + title
+	im = plt.imread(path)
 	fig, ax = plt.subplots()
 	im = ax.imshow(im)
 
-	with open('tmp/points.json', 'r') as fp:
+	path = get_path_relative_to_src('../tmp/points.json')
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 		
 		for key in data.keys():     # key: curve_0, curve_1, ...
@@ -603,13 +630,15 @@ def plot_curve2img(title='final.jpg', showPlot=False):
 	ax.set_title(text_str)
 
 	if showPlot: plt.show()
-	plt.savefig('imgcv/final.jpg')
-	s.final = cv.imread('imgcv/final.jpg')
+	path = get_path_relative_to_src('../imgcv/final.jpg')
+	plt.savefig(path)
+	s.final = cv.imread(path)
 	print( str('Plot curve to original img').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
 
 
 def numbering_curve():
-	with open('tmp/points.json', 'r') as fp:
+	path = get_path_relative_to_src('../tmp/points.json')
+	with open(path, 'r') as fp:
 		data = json.load(fp)
 
 		num = 0
