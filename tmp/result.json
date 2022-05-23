@@ -1,6 +1,6 @@
 {
     "result": {
-        "datetime": "05/23/2022 16:05:31",
+        "datetime": "05/23/2022 16:45:30",
         "num_fish": 1,
         "avg_fishlength": 738.7680012417927,
         "encoded": "bin/final.bin"
