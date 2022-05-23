@@ -34,6 +34,6 @@ f.show_imgjson()
 f.encode_imgjson()
 
 print("Total number of fish:", num_fish)
-print("Average of fish length:", fishlength)
+print("Average of fish length:", fishlength, end='\n\n')
 
 #f.decode_imgjson()

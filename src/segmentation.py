@@ -4,11 +4,13 @@ import imutils
 from matplotlib import markers
 import numpy as np
 import src.command as cmd
+import os
 
 # SETUP PARAMETER
 param = []
 def config_segmentation(param=param, configChoice=0):    # import tmp/config.json
-    with open('tmp/config.json', 'r') as fp:
+    path = os.path.join(os.path.dirname(__file__), str('../tmp/config.json'))
+    with open(path, 'r') as fp:
         data = json.load(fp)
         for val in data.values():
             if val['_id'] == configChoice:
