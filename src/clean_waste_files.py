@@ -1,17 +1,29 @@
-# I want to run this program on linux
+# I want to delete all files in bin/ & imgcv/, 
+# except final.bin & final.jpg
+
 import os
 
-path = os.path.dirname(__file__)
+def main():
+    # path that I want to delete
+    # path relative to src/ folder
+    add_dir = ['../imgcv/', '../bin/']
 
-# path that I want to delete
-# path relative to src/ folder
-add_dir = ['../imgcv/', '../bin/']
+    for dir in add_dir:
+        working_path = os.path.dirname(__file__)
+        path = os.path.join(working_path, dir)
 
-for dir in add_dir:
-    path = os.path.join(path, dir)
+        # Scan all file in dir
+        list = []
+        for (root, dirs, file) in os.walk(path):
+            for f in file:
+                if 'final' not in f:    # Save all to list, except final.format
+                    list.append(f)
 
-    # Delete all files in dir, except final file
-    if 'imgcv' in dir:
-        os.system('rm -v !("final.jpg")')
-    elif 'bin' in dir:
-        os.system('rm -v !("final.bin")')
+        # Delete all files in dir, except final file
+        for fn in list:
+            fnpath = str(path + fn)
+            os.remove(fnpath)
+
+
+if __name__ == '__main__':
+    main()
