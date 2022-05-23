@@ -1,5 +1,5 @@
 import os
-from src.mafunction import get_path_relative_to_src, add_encode_resultjson, clear_json_file, update_files_from_resultjson, validate_resultjson
+from src.mafunction import get_path_relative_to_src, add_encode_resultjson, clear_json_file, update_files_from_resultjson, validate_resultjson, print_final_result
 
 # Get the path of this file --> ~/fish-length-opencv/
 path = get_path_relative_to_src('../img/')
@@ -27,3 +27,6 @@ validate_resultjson()
 
 # From final result.json, I need to update final.bin & final.jpg
 update_files_from_resultjson()
+
+# Print final result
+print_final_result()
