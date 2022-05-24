@@ -1,5 +1,5 @@
 import os
-from src.mafunction import printlog, get_path_relative_to_src, add_encode_resultjson, clear_json_file, update_files_from_resultjson, validate_resultjson, print_final_result
+from src.mafunction import print_processing_which_img, printlog, get_path_relative_to_src, add_encode_resultjson, clear_json_file, update_files_from_resultjson, validate_resultjson, print_final_result
 
 
 def run(isLinux=False):
@@ -20,7 +20,10 @@ def run(isLinux=False):
 		# cmd /k : remain after run
 		# cmd /c : terminate after run
 		fpath = os.path.join(path, f)
+
+		print_processing_which_img(filename=f)
 		printlog( str(' [PROCESSING] %s ' %f).center(42, '='), end='\n\n')
+		
 		if isLinux: 
 			os.system('python main.py --image %s' %fpath)
 		else: 	# For Windows
@@ -29,6 +32,7 @@ def run(isLinux=False):
 		# In this step, in result.json, "encoded": ""
 		# Add the encoded string to result.json for each image
 		add_encode_resultjson(key_name=f)
+
 		printlog( str(' [DONE] %s ' %f).center(42, '='), end='\n\n\n' )
 
 	# result.json will save all measurements result for each file in img/

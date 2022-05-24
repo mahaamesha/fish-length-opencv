@@ -656,6 +656,13 @@ def numbering_curve():
 	cv.imwrite('imgcv/final.jpg', s.final)
 
 
+def print_processing_which_img(filename='0.jpg'):
+	if filename == '0.jpg':
+		print( str(' [START] ').center(42, '='), end='\n\n')
+		print('Processing:')
+	print( str('\t%s ' %filename).ljust(30,'.') + str('Done').rjust(5,' '))
+
+
 def print_final_result(print_funtion):
 	path = get_path_relative_to_src('../tmp/result.json')
 	with open(path, 'r') as f:
