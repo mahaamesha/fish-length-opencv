@@ -11,15 +11,21 @@ import src.segmentation as s
 import src.command as cmd
 
 
-def printlog(msg='the message', isClearFirst=False):
-	path = get_path_relative_to_src('../tmp/log.txt')
+def printlog(msg, var=None, isClearFirst=False):
+	working_path = os.path.dirname(__file__)
+	path = os.path.join(working_path, 'log.txt')
+	#path = get_path_relative_to_src('../tmp/log.txt')
 	
 	if isClearFirst:
 		with open(path, 'w'):
 			pass
 
 	with open(path, 'a') as f:
-		print(msg, file=f)
+		if var == None:
+			message = msg
+		else:
+			message = msg + ' ' + str(var)
+		print(message,  file=f)
 
 
 def get_path_relative_to_src(path2=''):
