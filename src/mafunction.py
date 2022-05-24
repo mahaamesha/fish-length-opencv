@@ -656,7 +656,7 @@ def numbering_curve():
 	cv.imwrite('imgcv/final.jpg', s.final)
 
 
-def print_final_result():
+def print_final_result(print_funtion):
 	path = get_path_relative_to_src('../tmp/result.json')
 	with open(path, 'r') as f:
 		data = json.load(f)
@@ -664,10 +664,10 @@ def print_final_result():
 			arr_key = list(val.keys())
 			arr_val = list(val.values())
 		
-		printlog()
-		printlog( str(' [FINAL RESULT] ').center(42, '='), end='\n\n' )
+		print_funtion()
+		print_funtion( str(' [FINAL RESULT] ').center(42, '='), end='\n\n' )
 		for i in range(len(arr_key)):
-			printlog( str(arr_key[i]).ljust(17, ' ') + str(': %s' %arr_val[i]))
-		printlog()
-		printlog( str(' [END] ').center(42, '='), end='\n\n' )
+			print_funtion( str(arr_key[i]).ljust(17, ' ') + str(': %s' %arr_val[i]))
+		print_funtion()
+		print_funtion( str(' [END] ').center(42, '='), end='\n\n' )
 		

@@ -39,7 +39,8 @@ def run(isLinux=False):
 	update_files_from_resultjson()
 
 	# Print final result
-	print_final_result()
+	print_final_result(print_funtion=printlog)
+	print_final_result(print_funtion=print)
 
 if __name__ == '__main__':
 	run(isLinux=False)
