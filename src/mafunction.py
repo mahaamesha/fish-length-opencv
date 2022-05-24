@@ -656,11 +656,16 @@ def numbering_curve():
 	cv.imwrite('imgcv/final.jpg', s.final)
 
 
-def print_processing_which_img(filename='0.jpg'):
+def print_processing_which_img(filename='0.jpg', exception='last.jpg'):
 	if filename == '0.jpg':
 		print( str(' [START] ').center(42, '='), end='\n\n')
 		print('Processing:')
-	print( str('\t%s' %filename) )
+		print( str('\t%s' %filename), end=' ' )
+	else:
+		if filename != exception:
+			print( str('ok\n') + str('\t%s' %filename), end=' ' )
+		else:	# for last.jpg
+			print( str('ok\n') + str('\t%s ok' %filename) )
 
 
 def print_final_result(print_funtion):

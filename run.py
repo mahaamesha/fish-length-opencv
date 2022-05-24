@@ -21,7 +21,7 @@ def run(isLinux=False):
 		# cmd /c : terminate after run
 		fpath = os.path.join(path, f)
 
-		print_processing_which_img(filename=f)
+		print_processing_which_img(filename=f, exception=list[len(list)-1])
 		printlog( str(' [PROCESSING] %s ' %f).center(42, '='), end='\n\n')
 		
 		if isLinux: 
