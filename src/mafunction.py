@@ -11,6 +11,17 @@ import src.segmentation as s
 import src.command as cmd
 
 
+def printlog(msg='the message', isClearFirst=False):
+	path = get_path_relative_to_src('../tmp/log.txt')
+	
+	if isClearFirst:
+		with open(path, 'w'):
+			pass
+
+	with open(path, 'a') as f:
+		print(msg, file=f)
+
+
 def get_path_relative_to_src(path2=''):
 	# Fill the arguments with filename or dir/filename: 
 	# 'filename.format' or 'directory/filename.format'
