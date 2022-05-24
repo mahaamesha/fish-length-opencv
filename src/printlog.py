@@ -3,7 +3,7 @@ import os
 
 def printlog(msg='', var=None, isClearFirst=False, end='\n'):
 	working_path = os.path.dirname(__file__)
-	path = os.path.join(working_path, 'log.txt')
+	path = os.path.join(working_path, '../tmp/log.txt')
 	
 	if isClearFirst:
 		with open(path, 'w'):

@@ -665,9 +665,9 @@ def print_final_result():
 			arr_val = list(val.values())
 		
 		printlog()
-		printlog( str(' FINAL RESULT ').center(42, '='), end='\n\n' )
+		printlog( str(' [FINAL RESULT] ').center(42, '='), end='\n\n' )
 		for i in range(len(arr_key)):
 			printlog( str(arr_key[i]).ljust(17, ' ') + str(': %s' %arr_val[i]))
 		printlog()
-		printlog( str(' END ').center(42, '='), end='\n\n' )
+		printlog( str(' [END] ').center(42, '='), end='\n\n' )
 		
