@@ -1,5 +1,4 @@
 import src.mafunction as f
-import src.segmentation as s
 
 # Use command in terminal to use main.py
 #python main.py -i img/lele.jpg -w 1
@@ -33,7 +32,7 @@ f.show_imgjson()
 # Encode img whose _encodeflag == 1
 f.encode_imgjson()
 
-print("Total number of fish:", num_fish)
-print("Average of fish length:", fishlength, end='\n\n')
+f.printlog("Total number of fish:", num_fish)
+f.printlog("Average of fish length:", fishlength, end='\n\n')
 
 #f.decode_imgjson()

@@ -7,8 +7,10 @@ import os
 import base64
 from datetime import datetime
 
-import src.segmentation as s
 import src.command as cmd
+from src.printlog import printlog
+
+import src.segmentation as s	# This will do SEGMENTATION PROCESS
 
 
 def get_path_relative_to_src(path2=''):
@@ -73,7 +75,7 @@ def generate_imagesjson(list_img=s.list_img):
 			if i != num_row-1: f.write('\t},\n')
 			else: f.write('\t}\n')
 		f.write('}')
-	print( str('Generate images.json').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
+	printlog( str('Generate images.json').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
 
 def points2json(title, dict):
 	# dict = {
@@ -101,7 +103,6 @@ def points2json(title, dict):
 
 	with open(path, 'w') as fp:
 		json.dump(final_dict, fp, indent=4)
-	#print('Export', filename, '... Done')
 
 
 # check images.json, return '_id'
@@ -122,12 +123,12 @@ def show_img(title, img, destroy_all=False):
 	cv.waitKey(0)
 	if destroy_all == True:
 		cv.destroyAllWindows()
-	print( str('\tShow ' + title + '.jpg').ljust(30,'.') + str('Done').rjust(5,' ') )
+	printlog( str('\tShow ' + title + '.jpg').ljust(30,'.') + str('Done').rjust(5,' ') )
 
 
 # to not show, set the '_flag' to 0 in images.json
 def show_imgjson():
-	print(str('Show selected img listed in images.json:'))
+	printlog(str('Show selected img listed in images.json:'))
 	path = get_path_relative_to_src('../tmp/images.json')
 	with open(path, 'r') as fp:
 		data = json.load(fp)
@@ -135,7 +136,7 @@ def show_imgjson():
 		for val in data.values():
 			if val['_showflag']:
 				show_img(val['_var'], s.list_img[ val['_id'] ][3])
-	print()
+	printlog()
 		
 
 def save_img(title, img):
@@ -144,20 +145,20 @@ def save_img(title, img):
 	status = cv.imwrite(path, img)
 	# folder should be initialized first
 	
-	print( str('\t' + only_last_path(path)).ljust(30,'.') + str(status).rjust(5,' ') )
+	printlog( str('\t' + only_last_path(path)).ljust(30,'.') + str(status).rjust(5,' ') )
 
 
 # save all to imgcv, source from images.json
 # to improve memory, I only save img with _encodeflag == 1
 def save_imgjson():
-	print('Save all img listed in images.json:')
+	printlog('Save all img listed in images.json:')
 	path = get_path_relative_to_src('../tmp/images.json')
 	with open(path, 'r') as fp:
 		data = json.load(fp)
 		for val in data.values():
 			if val['_encodeflag'] == 1:
 				save_img(val['_var'], s.list_img[ val['_id'] ][3])
-	print()
+	printlog()
 
 
 # img to string
@@ -171,7 +172,7 @@ def encode_img(title='final'):
 	with open(path_bin, 'wb') as file:
 		file.write(converted_string)
 	
-	print(str('\t' + only_last_path(path_bin)).ljust(30,'.') + str('Done').rjust(5,' '))
+	printlog(str('\t' + only_last_path(path_bin)).ljust(30,'.') + str('Done').rjust(5,' '))
 	return str(converted_string)
 	
 
@@ -188,12 +189,12 @@ def decode_img(title='final'):  # check filename in folder imgcv
 	decodeit.write(base64.b64decode((byte)))
 	decodeit.close()
 	
-	print( str('\t' + only_last_path(path_imgcv)).ljust(30,'.') + str('Done').rjust(5,' ') )
+	printlog( str('\t' + only_last_path(path_imgcv)).ljust(30,'.') + str('Done').rjust(5,' ') )
 
 
 # save img string to json only if _encodflag == 1
 def encode_imgjson():
-	print('Encode *.jpg in /imgcv/:')
+	printlog('Encode *.jpg in /imgcv/:')
 	path = get_path_relative_to_src('../tmp/images.json')
 	with open(path, 'r') as fp:
 		data = json.load(fp)
@@ -204,18 +205,18 @@ def encode_imgjson():
 
 	with open(path, 'w') as fp:
 		json.dump(data, fp, indent=4)   # write images.json
-	print()
+	printlog()
 
 
 def decode_imgjson():
-	print('Decode *.bin in /bin/:')
+	printlog('Decode *.bin in /bin/:')
 	path = get_path_relative_to_src('../tmp/images.json')
 	with open(path, 'r') as fp:
 		data = json.load(fp)
 		for val in data.values():
 			if val["_encodeflag"] == 1:
 				decode_img( str(val['_var']))
-	print()
+	printlog()
 
 
 def add_encode_resultjson(key_name='0.jpg'):
@@ -239,7 +240,7 @@ def calc_perimeter(cnts=s.cnts):
 	for i in cnts:
 		arc_length = cv.arcLength(i, True)
 		perimeter.append(arc_length)
-	print("perimeter:", "{:.2f}".format(perimeter))
+	printlog("perimeter:", "{:.2f}".format(perimeter))
 
 	return perimeter
 
@@ -248,7 +249,7 @@ def calc_area(cnts=s.cnts):
 	area = []
 	for cnt in cnts:
 		area.append( cv.contourArea(cnt) )
-	#print("area:", area)
+	#printlog("area:", area)
 
 	return area
 
@@ -257,7 +258,7 @@ def num_moments(cnts=s.cnts):
 	moments = []
 	for cnt in cnts:
 		moments.append( cv.moments(cnt) )
-	print("moment:", moments)
+	printlog("moment:", moments)
 
 	return moments
 
@@ -312,7 +313,7 @@ def edge_points(cnts=s.cnts, image=s.image):
 	
 		# Flaten the array
 		n = approx.ravel()
-		#print("Flaten array:", n)   # For future: store in json file
+		#printlog("Flaten array:", n)   # For future: store in json file
 		i = 0
 	
 		for j in n :
@@ -346,7 +347,7 @@ def curve_length(dict_points):  # distance of 2 points: A and B
 
 		sum += dl
 	
-	#print('Fish Length:', "{:.2f}".format(sum))
+	#printlog('Fish Length:', "{:.2f}".format(sum))
 	return sum
 
 
@@ -365,19 +366,19 @@ def get_fish_length():
 	with open(path, 'w') as fp:
 		json.dump(fish_length, fp, indent=4)
 
-	print( str('Measure fish length').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
+	printlog( str('Measure fish length').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
 
 
 # This will be better if len(data) > 1
 def validate_data(data):
 	copy = data[:]
 	err = 0.3
-	#print('data:', data)
+	#printlog('data:', data)
 	for n in data:
 		avg = np.average(copy)
 		lower = avg - err*avg
 		upper = avg + err*avg
-		#print(avg, lower, upper)
+		#printlog(avg, lower, upper)
 		
 		# remove small data
 		if n < lower:
@@ -389,7 +390,7 @@ def validate_data(data):
 			for i in range(factor):
 				avg = np.average(copy)
 				copy.append(avg)
-		#print('copy:', copy)
+		#printlog('copy:', copy)
 	data = copy[:]
 	return data
 
@@ -531,7 +532,7 @@ def fit_poly(cnts=s.cnts, showPlot=False, option=1):
 			plt.scatter(x, y)
 			plt.plot(myline, mymodel(list_x))
 			plt.show()
-	print( str('Curve fitting for every contour').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
+	printlog( str('Curve fitting for every contour').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
 
 
 def avg_fishlength():
@@ -542,9 +543,9 @@ def avg_fishlength():
 		sum = 0
 		for val in data.values():
 			sum += val['length'] 
-			#print(val['length'])
+			#printlog(val['length'])
 		avg = sum / len(data)
-		#print('avg', avg)
+		#printlog('avg', avg)
 	return avg
 
 
@@ -635,7 +636,7 @@ def plot_curve2img(title='final.jpg', showPlot=False):
 	path = get_path_relative_to_src('../imgcv/final.jpg')
 	plt.savefig(path)
 	s.final = cv.imread(path)
-	print( str('Plot curve to original img').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
+	printlog( str('Plot curve to original img').ljust(37,'.') + str('Done').rjust(5,' '), end='\n\n')
 
 
 def numbering_curve():
@@ -663,10 +664,10 @@ def print_final_result():
 			arr_key = list(val.keys())
 			arr_val = list(val.values())
 		
-		print()
-		print( str(' FINAL RESULT ').center(42, '='), end='\n\n' )
+		printlog()
+		printlog( str(' [FINAL RESULT] ').center(42, '='), end='\n\n' )
 		for i in range(len(arr_key)):
-			print( str(arr_key[i]).ljust(17, ' ') + str(': %s' %arr_val[i]))
-		print()
-		print( str(' END ').center(42, '='), end='\n\n' )
+			printlog( str(arr_key[i]).ljust(17, ' ') + str(': %s' %arr_val[i]))
+		printlog()
+		printlog( str(' [END] ').center(42, '='), end='\n\n' )
 		
