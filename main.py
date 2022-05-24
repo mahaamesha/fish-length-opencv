@@ -1,5 +1,4 @@
 import src.mafunction as f
-import src.segmentation as s
 
 # Use command in terminal to use main.py
 #python main.py -i img/lele.jpg -w 1
