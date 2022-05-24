@@ -30,7 +30,7 @@ def only_last_path(full_path='srcpath\../dirname/filename.format'):
 		if full_path[i] == '/':
 			limit_slash -= 1
 			if limit_slash == 0:
-				return str(full_path[i:])
+				return str(full_path[i+1:])
 
 
 def is_file_empty(file_path):
@@ -580,7 +580,8 @@ def generate_resultjson():
 		}
 
 		# Create new key based on img path
-		key_name = str(cmd.args["image"]).replace('img/', '')
+		#key_name = str(cmd.args["image"]).replace('img/', '')
+		key_name = str( only_last_path(full_path=cmd.args["image"]) ).replace('img/', '')
 		data[key_name] = tmp
 	
 	# Write the json file
@@ -594,7 +595,8 @@ def get_info_resultjson(info='datetime'):
 	with open(path, 'r') as fp:
 		data = json.load(fp)
 		for key in data.keys():
-			key_name = str(cmd.args['image']).replace('img/', '')
+			#key_name = str(cmd.args['image']).replace('img/', '')
+			key_name = str( only_last_path(full_path=cmd.args["image"]) ).replace('img/', '')
 			if key == key_name:
 				if info == 'avg_fishlength':
 					return str( round(data[key][info],2) )

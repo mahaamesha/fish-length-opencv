@@ -17,10 +17,11 @@ def run(isLinux=False):
 	for f in list:
 		# cmd /k : remain after run
 		# cmd /c : terminate after run
+		fpath = os.path.join(path, f)
 		if isLinux: 
-			os.system('python main.py --image img/%s' %f)
+			os.system('python main.py --image %s' %fpath)
 		else: 	# For Windows
-			os.system('cmd /c "python main.py --image img/%s"' %f)
+			os.system('cmd /c "python main.py --image %s"' %fpath)
 
 		# In this step, in result.json, "encoded": ""
 		# Add the encoded string to result.json for each image

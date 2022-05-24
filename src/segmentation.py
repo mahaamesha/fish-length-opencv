@@ -1,7 +1,7 @@
 import json
 import cv2 as cv
 import imutils
-from matplotlib import markers
+from matplotlib import markers, pyplot as plt
 import numpy as np
 import src.command as cmd
 import os
@@ -37,7 +37,8 @@ config_segmentation()
 
 # IMAGE SEGMENTATION PROCESS
 image_path = cmd.args["image"]
-image = cv.imread(image_path)            # Read the image
+#image = cv.imread(image_path)            # Read the image
+image = plt.imread(image_path)            # Read the image
 cvt = cv.cvtColor(image, cv.COLOR_BGR2GRAY)     # Convert object color to GRAY
 imgaus = cv.GaussianBlur(cvt, (param[0][0],param[0][1]), 0)      # Blur using Gaussian Method to ignore noise
 
