@@ -1,7 +1,7 @@
 import os
 
 
-def printlog(msg, var=None, isClearFirst=False):
+def printlog(msg='', var=None, isClearFirst=False, end='\n'):
 	working_path = os.path.dirname(__file__)
 	path = os.path.join(working_path, 'log.txt')
 	
@@ -11,14 +11,7 @@ def printlog(msg, var=None, isClearFirst=False):
 
 	with open(path, 'a') as f:
 		if var == None:
-			message = msg
+			message = msg + end
 		else:
-			message = msg + ' ' + str(var)
-		print(message,  file=f)
-
-
-num = 222
-
-printlog('asdad', num, isClearFirst=True)
-printlog('kutaii')
-
+			message = msg + ' ' + str(var) + end
+		print(message,  file=f, end='')

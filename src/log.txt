@@ -1,0 +1,92 @@
+
+=========== [PROCESSING] 0.jpg ===========
+
+Use segmentation config_0............ Done
+
+Generate images.json................. Done
+
+Save all img listed in images.json:
+	imgcv/final.jpg.............. True
+
+Curve fitting for every contour...... Done
+
+Measure fish length.................. Done
+
+Plot curve to original img........... Done
+
+Show selected img listed in images.json:
+
+Encode *.jpg in /imgcv/:
+	bin/final.bin................ Done
+
+Total number of fish: 2
+Average of fish length: 564.5430582754792
+
+=============== [OK] 0.jpg ===============
+
+
+=========== [PROCESSING] 1.jpg ===========
+
+Use segmentation config_0............ Done
+
+Generate images.json................. Done
+
+Save all img listed in images.json:
+	imgcv/final.jpg.............. True
+
+Curve fitting for every contour...... Done
+
+Measure fish length.................. Done
+
+Plot curve to original img........... Done
+
+Show selected img listed in images.json:
+
+Encode *.jpg in /imgcv/:
+	bin/final.bin................ Done
+
+Total number of fish: 1
+Average of fish length: 740.1890335135705
+
+=============== [OK] 1.jpg ===============
+
+
+=========== [PROCESSING] 2.jpg ===========
+
+Use segmentation config_0............ Done
+
+Generate images.json................. Done
+
+Save all img listed in images.json:
+	imgcv/final.jpg.............. True
+
+Curve fitting for every contour...... Done
+
+Measure fish length.................. Done
+
+Plot curve to original img........... Done
+
+Show selected img listed in images.json:
+
+Encode *.jpg in /imgcv/:
+	bin/final.bin................ Done
+
+Total number of fish: 1
+Average of fish length: 856.0534957550404
+
+=============== [OK] 2.jpg ===============
+
+
+Decode *.bin in /bin/:
+	imgcv/final.jpg.............. Done
+
+
+============== FINAL RESULT ==============
+
+datetime         : 05/25/2022 00:56:10
+num_fish         : 1
+avg_fishlength   : 740.1890335135705
+encoded          : bin/final.bin
+
+================== END ===================
+
