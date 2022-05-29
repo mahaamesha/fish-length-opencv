@@ -6,7 +6,7 @@ import os
 def main():
     # path that I want to delete
     # path relative to src/ folder
-    add_dir = ['../imgcv/', '../bin/']
+    add_dir = ['../imgcv/', '../bin/', '../imgtest/']
 
     for dir in add_dir:
         working_path = os.path.dirname(__file__)
