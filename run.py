@@ -2,7 +2,7 @@ import os
 from src.mafunction import print_processing_which_img, printlog, get_path_relative_to_src, add_encode_resultjson, clear_json_file, update_files_from_resultjson, validate_resultjson, print_final_result
 
 
-def run(isLinux=False):
+def run(isLinux=True):
 	# Get the path of this file --> ~/fish-length-opencv/
 	path = get_path_relative_to_src('../img/')
 
@@ -47,4 +47,4 @@ def run(isLinux=False):
 	print_final_result(print_funtion=print)
 
 if __name__ == '__main__':
-	run(isLinux=False)
+	run(isLinux=True)
